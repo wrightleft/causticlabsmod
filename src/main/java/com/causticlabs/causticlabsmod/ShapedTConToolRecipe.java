@@ -15,7 +15,7 @@ public class ShapedTConToolRecipe extends ShapedOreRecipe {
 
     static {
         RecipeSorter.register(
-            CausticLabsMod.ID + ":ShapedTConToolRecipe",
+            CausticLabsMod.MODID + ":ShapedTConToolRecipe",
             ShapedTConToolRecipe.class,
             RecipeSorter.Category.SHAPED, "");
     }

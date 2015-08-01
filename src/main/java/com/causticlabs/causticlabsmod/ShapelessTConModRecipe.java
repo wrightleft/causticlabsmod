@@ -17,7 +17,7 @@ public class ShapelessTConModRecipe implements IRecipe{
 
     static {
         RecipeSorter.register(
-            CausticLabsMod.ID + ":ShapelessTConModRecipe",
+            CausticLabsMod.MODID + ":ShapelessTConModRecipe",
             ShapelessTConModRecipe.class,
             RecipeSorter.Category.SHAPELESS, "");
     }

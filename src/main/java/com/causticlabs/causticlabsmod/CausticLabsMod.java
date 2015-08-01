@@ -15,14 +15,19 @@ import org.apache.logging.log4j.Logger;
 import tconstruct.tools.TinkerTools;
 import tconstruct.weaponry.TinkerWeaponry;
 
+// There are a few more dependencies, but they have wildcard dependencies of their down which preclude us depending
+// on them.
+//
+// denseores
+// Iguana's Tinkers Tweaks
 @Mod(
-    modid = CausticLabsMod.ID,
+    modid = CausticLabsMod.MODID,
     name = CausticLabsMod.NAME,
     version = CausticLabsMod.VERSION,
-    dependencies = "required-after:TConstruct")
+    dependencies = "required-after:TConstruct;required-after:ThermalFoundation")
 public class CausticLabsMod
 {
-    public static final String ID = "causticlabsmod";
+    public static final String MODID = "causticlabsmod";
     public static final String NAME = "Caustic Labs Mod";
     public static final String VERSION = "1.7.10-1.0";
 

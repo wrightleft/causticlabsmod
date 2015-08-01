@@ -30,7 +30,7 @@ public class ShapelessUseTConToolRecipe implements IRecipe {
 
     static {
         RecipeSorter.register(
-            CausticLabsMod.ID + ":ShapelessUseTConToolRecipe",
+            CausticLabsMod.MODID + ":ShapelessUseTConToolRecipe",
             ShapelessUseTConToolRecipe.class,
             RecipeSorter.Category.SHAPELESS, "");
     }

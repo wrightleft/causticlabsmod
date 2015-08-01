@@ -20,7 +20,7 @@ public class ShapedUseTConToolRecipe implements IRecipe {
 
     static {
         RecipeSorter.register(
-            CausticLabsMod.ID + ":ShapedUseTConToolRecipe",
+            CausticLabsMod.MODID + ":ShapedUseTConToolRecipe",
             ShapedUseTConToolRecipe.class,
             RecipeSorter.Category.SHAPED, "");
     }
