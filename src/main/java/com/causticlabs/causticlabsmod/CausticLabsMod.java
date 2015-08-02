@@ -63,18 +63,94 @@ public class CausticLabsMod {
       ItemStack anyBowLimb = new ItemStack(TinkerWeaponry.partBowLimb, 1, OreDictionary.WILDCARD_VALUE);
       ItemStack anyChiselHead = new ItemStack(TinkerTools.chiselHead, 1, OreDictionary.WILDCARD_VALUE);
 
-      GameRegistry.addRecipe(new ShapedTConToolRecipe(" A", "B ", anyHatchetHead, "materialRod"));
-      GameRegistry.addRecipe(new ShapedTConToolRecipe(" A", "B ", anyShovelHead, "materialRod"));
-      GameRegistry.addRecipe(new ShapedTConToolRecipe("A C", " B ", anyHatchetHead, "materialRod", anyShovelHead));
-      GameRegistry.addRecipe(new ShapedTConToolRecipe("A", "C", "B", anyPickaxeHead, "materialRod", "materialBinding"));
-      GameRegistry.addRecipe(new ShapedTConToolRecipe("A", "C", "B", anyKnifeBlade, "materialRod", anyCrossbar));
-      GameRegistry.addRecipe(
-            new ShapedTConToolRecipe(" A", "CB", anyBowLimb, new ItemStack(TinkerWeaponry.bowstring), anyBowLimb));
-      GameRegistry.addRecipe(new ShapedTConToolRecipe("A", "B", anyKnifeBlade, "materialRod"));
+      GameRegistry.addRecipe(new ShapedTConToolRecipe(
+         anyHatchetHead, 
+         "materialRod", 
+         new Object[][] {{anyHatchetHead},
+                         {"materialRod" }}));
+      GameRegistry.addRecipe(new ShapedTConToolRecipe(
+         anyHatchetHead, 
+         "materialRod", 
+         new Object[][] {{null         , anyHatchetHead},
+                         {"materialRod", null          }}));
 
-      GameRegistry.addRecipe(new ShapedTConToolRecipe("A", "B", anyChiselHead, "materialRod"));
+      GameRegistry.addRecipe(new ShapedTConToolRecipe(
+            anyShovelHead, 
+            "materialRod", 
+            new Object[][] {{anyShovelHead},
+                            {"materialRod"}}));
+      GameRegistry.addRecipe(new ShapedTConToolRecipe(
+            anyShovelHead, 
+            "materialRod", 
+            new Object[][] {{null         , anyShovelHead},
+                            {"materialRod", null          }}));
+      
+      GameRegistry.addRecipe(new ShapedTConToolRecipe(
+            anyHatchetHead,
+            "materialRod", 
+            anyShovelHead, 
+            new Object[][] {{anyHatchetHead, null         , anyShovelHead},
+                            {null          , "materialRod", null          }}));
 
-      GameRegistry.addRecipe(new ShapedTConToolRecipe(" A", "B ", anyChiselHead, "materialRod"));
+      GameRegistry.addRecipe(new ShapedTConToolRecipe(
+            anyPickaxeHead,
+            "materialRod", 
+            "materialBinding", 
+            new Object[][] {{anyPickaxeHead   },
+                            {"materialBinding"},
+                            {"materialRod"    }}));
+      GameRegistry.addRecipe(new ShapedTConToolRecipe(
+            anyPickaxeHead,
+            "materialRod", 
+            "materialBinding", 
+            new Object[][] {{null         , null             , anyPickaxeHead   },
+                            {null         , "materialBinding", null             },
+                            {"materialRod", null             , null             }}));
+
+      GameRegistry.addRecipe(new ShapedTConToolRecipe(
+            anyKnifeBlade,
+            "materialRod", 
+            anyCrossbar, 
+            new Object[][] {{anyKnifeBlade},
+                            {anyCrossbar  },
+                            {"materialRod"}}));
+      GameRegistry.addRecipe(new ShapedTConToolRecipe(
+            anyKnifeBlade,
+            "materialRod", 
+            anyCrossbar, 
+            new Object[][] {{null         , null       , anyKnifeBlade},
+                            {null         , anyCrossbar, null         },
+                            {"materialRod", null       , null         }}));
+      
+      ItemStack bowstring = new ItemStack(TinkerWeaponry.bowstring);
+      GameRegistry.addRecipe(new ShapedTConToolRecipe(
+            anyBowLimb,
+            bowstring, 
+            anyBowLimb, 
+            new Object[][] {{null      , anyBowLimb},
+                            {anyBowLimb, bowstring }}));
+
+      GameRegistry.addRecipe(new ShapedTConToolRecipe(
+            anyKnifeBlade,
+            "materialRod",
+            new Object[][] {{anyKnifeBlade},
+                            {"materialRod"}}));
+      GameRegistry.addRecipe(new ShapedTConToolRecipe(
+            anyKnifeBlade,
+            "materialRod",
+            new Object[][] {{null         , anyKnifeBlade},
+                            {"materialRod", null         }}));
+
+      GameRegistry.addRecipe(new ShapedTConToolRecipe(
+            anyChiselHead,
+            "materialRod",
+            new Object[][] {{anyChiselHead},
+                            {"materialRod"}}));
+      GameRegistry.addRecipe(new ShapedTConToolRecipe(
+            anyChiselHead,
+            "materialRod",
+            new Object[][] {{null         , anyChiselHead},
+                            {"materialRod", null         }}));
 
       // Add Recipes with Tools
 
