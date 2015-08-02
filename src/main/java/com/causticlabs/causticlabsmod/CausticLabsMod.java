@@ -12,10 +12,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.Logger;
+
+import tconstruct.library.TConstructRegistry;
+import tconstruct.library.crafting.PatternBuilder;
 import tconstruct.tools.TinkerTools;
 import tconstruct.weaponry.TinkerWeaponry;
 
-// There are a few more dependencies, but they have wildcard dependencies of their down which preclude us depending
+// There are a few more dependencies, but they have wildcard dependencies of their own which preclude us depending
 // on them.
 //
 // denseores
@@ -88,9 +91,15 @@ public class CausticLabsMod
         GameRegistry.addRecipe(new ShapedTConToolRecipe(
             "A",
             "B", anyKnifeBlade, "materialRod"));
+
+        
         GameRegistry.addRecipe(new ShapedTConToolRecipe(
             "A",
             "B", anyChiselHead, "materialRod"));
+        
+        GameRegistry.addRecipe(new ShapedTConToolRecipe(
+            " A",
+            "B ", anyChiselHead, "materialRod"));
 
         // Add Recipes with Tools
 
@@ -110,7 +119,6 @@ public class CausticLabsMod
 
     @Mod.EventHandler
     public void onEvent(FMLInitializationEvent event) {
-
         MinecraftForge.EVENT_BUS.register(new BlockEventHandler());
         MinecraftForge.EVENT_BUS.register(new PlayerEventHandler());
         FMLCommonHandler.instance().bus().register(new ItemCraftedEventHandler());
@@ -119,6 +127,17 @@ public class CausticLabsMod
     @Mod.EventHandler
     public void onEvent(FMLPostInitializationEvent event) {
         HarvestLevel.apply(logger);
+
+        ItemStack anyChisel = new ItemStack(TinkerTools.chisel, 1, OreDictionary.WILDCARD_VALUE);
+        
+        ItemStack stonePickaxeHead = PatternBuilder.instance.getToolPart(
+    		new ItemStack(Blocks.stone), 
+    		new ItemStack(TinkerTools.woodPattern, 1, 2), 
+    		null)[0];
+        GameRegistry.addRecipe(new ShapedUseTConToolRecipe(stonePickaxeHead, 20, anyChisel, new Object[][]
+        	{{"stone" , "stone", null   },
+        	 {null    , "stone", "stone"},
+        	 {null    , null   , "stone"}}));
     }
 
 

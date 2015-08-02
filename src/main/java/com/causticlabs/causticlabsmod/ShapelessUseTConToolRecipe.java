@@ -23,9 +23,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ShapelessUseTConToolRecipe implements IRecipe {
-    private final ItemStack result;
-    private final int damage;
+public class ShapelessUseTConToolRecipe extends UseTConToolRecipe {
+
     private final List<Object> ingredients = new ArrayList<>();
 
     static {
@@ -36,32 +35,17 @@ public class ShapelessUseTConToolRecipe implements IRecipe {
     }
 
     public ShapelessUseTConToolRecipe(ItemStack result, int damage, Object... ingredients) {
-        this.result = result.copy();
-        this.damage = damage;
+    	super(result, damage);
 
         // Build our list of ingredients by converting whatever object we got
-        // into an ItemStack.
+        // into an ItemStack or a list of ItemStacks.
         for (Object ingredient : ingredients) {
-            if (ingredient instanceof ItemStack) {
-                this.ingredients.add(((ItemStack)ingredient).copy());
-            } else if (ingredient instanceof Item) {
-                this.ingredients.add(new ItemStack((Item)ingredient));
-            } else if (ingredient instanceof Block) {
-                this.ingredients.add(new ItemStack((Block)ingredient));
-            } else if (ingredient instanceof String) {
-                this.ingredients.add(OreDictionary.getOres((String)ingredient));
-            } else {
-                throw new RuntimeException("invalid ingredient");
-            }
+        	this.ingredients.add(Utils.translateIngredient(ingredient));
         }
     }
 
     @Override
-    public boolean matches(InventoryCrafting inventoryCrafting, World world) {
-        return matches(inventoryCrafting);
-    }
-
-    public boolean matches(IInventory inventoryCrafting) {
+    public boolean matches(InventoryCrafting inventoryCrafting) {
         ArrayList<Object> unmatchedIngredients = new ArrayList<>(ingredients);
         for (int i = 0; i < inventoryCrafting.getSizeInventory(); i++) {
             ItemStack providedIngredient = inventoryCrafting.getStackInSlot(i);
@@ -84,9 +68,10 @@ public class ShapelessUseTConToolRecipe implements IRecipe {
                                     //
                                     // Either we allow any damage, or we need to
                                     // match a specific damage.
-                                    return
-                                        ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE ||
-                                            ingredient.getItemDamage() == providedIngredient.getItemDamage();
+                                    // The item we're trying to match isn't the tool. So we can apply the normal rules of
+                                    // matching, which is pretty much just based on damage. However, the
+                                	// ore dictionary provides a convenient method to handle it for us.
+                                	return OreDictionary.itemMatches(ingredient, providedIngredient, false);
                                 }
                             } else {
                                 // The needed ingredient didn't match the provided
@@ -121,33 +106,7 @@ public class ShapelessUseTConToolRecipe implements IRecipe {
     }
 
     @Override
-    public ItemStack getCraftingResult(InventoryCrafting inventoryCrafting) {
-        return result.copy();
-    }
-
-    @Override
     public int getRecipeSize() {
         return ingredients.size();
-    }
-
-    @Override
-    public ItemStack getRecipeOutput() {
-        return null;
-    }
-
-    public void damageTools(IInventory inventoryCrafting, EntityPlayer player) {
-        for (int i = 0; i < inventoryCrafting.getSizeInventory(); i++) {
-            ItemStack providedIngredient = inventoryCrafting.getStackInSlot(i);
-            if (providedIngredient != null) {
-                if (providedIngredient.getItem() instanceof ToolCore) {
-                    tconstruct.library.tools.AbilityHelper.damageTool(
-                        providedIngredient,
-                        damage,
-                        player,
-                        false);
-                    ++providedIngredient.stackSize;
-                }
-            }
-        }
     }
 }
