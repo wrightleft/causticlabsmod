@@ -13,51 +13,52 @@ import net.minecraftforge.oredict.OreDictionary;
 import tconstruct.library.tools.ToolCore;
 import tconstruct.tools.TinkerTools;
 
+// This is a base class for other recipes that want to use a TCon tool. The
+// main point is that there is logic to damage the tools and prevent them from
+// being consumed.
 public abstract class UseTConToolRecipe implements IUseTConToolRecipe {
 
-    private final ItemStack result;
-    private final int damage;
-    
-    UseTConToolRecipe(ItemStack result, int damage) {
-    	this.result = result;
-    	this.damage = damage;
-    }
-    		
-    @Override
-    public ItemStack getCraftingResult(InventoryCrafting inventoryCrafting) {
-        return result.copy();
-    }
+   private final ItemStack result;
+   private final int damage;
 
-	@Override
-	public ItemStack getRecipeOutput() {
-		return null;
-	}
+   UseTConToolRecipe(ItemStack result, int damage) {
+      this.result = result;
+      this.damage = damage;
+   }
 
-    @Override
-    public boolean matches(InventoryCrafting inventoryCrafting, World world) {
-        return matches(inventoryCrafting);
-    }
+   @Override
+   public ItemStack getCraftingResult(InventoryCrafting inventoryCrafting) {
+      return result.copy();
+   }
 
-	@Override
-	public void damageTools(InventoryCrafting inventoryCrafting, EntityPlayer player) {
-        for (int i = 0; i < inventoryCrafting.getSizeInventory(); i++) {
-            ItemStack providedIngredient = inventoryCrafting.getStackInSlot(i);
-            if (providedIngredient != null) {
-                if (providedIngredient.getItem() instanceof ToolCore) {
-                    tconstruct.library.tools.AbilityHelper.damageTool(
-                        providedIngredient,
-                        damage,
-                        player,
-                        false);
+   @Override
+   public ItemStack getRecipeOutput() {
+      return null;
+   }
 
-            		// The chisel already handles not consuming itself during crafting.
-                    // None of the other tools do though.
-                	if (providedIngredient.getItem() != TinkerTools.chisel) {
-                        ++providedIngredient.stackSize;
-                	}
-                }
+   @Override
+   public boolean matches(InventoryCrafting inventoryCrafting, World world) {
+      return matches(inventoryCrafting);
+   }
+
+   @Override
+   public void damageTools(InventoryCrafting inventoryCrafting, EntityPlayer player) {
+      for (int i = 0; i < inventoryCrafting.getSizeInventory(); i++) {
+         ItemStack providedIngredient = inventoryCrafting.getStackInSlot(i);
+         if (providedIngredient != null) {
+            if (providedIngredient.getItem() instanceof ToolCore) {
+               tconstruct.library.tools.AbilityHelper.damageTool(providedIngredient, damage, player, false);
+
+               // The chisel already handles not consuming itself during
+               // crafting. None of the other tools do though. The method
+               // that the chisel uses doesn't allow for the damage to be
+               // part of the recipe, which is a mistake.
+               if (providedIngredient.getItem() != TinkerTools.chisel) {
+                  ++providedIngredient.stackSize;
+               }
             }
-        }
-    }
+         }
+      }
+   }
 
 }
