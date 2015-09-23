@@ -7,7 +7,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.Logger;
+
+import tconstruct.library.TConstructRegistry;
+import tconstruct.library.tools.ToolMaterial;
 import tconstruct.library.util.HarvestLevels;
+import tconstruct.tools.TinkerTools;
 import tconstruct.world.TinkerWorld;
 
 import java.util.*;
@@ -33,11 +37,11 @@ public enum HarvestLevel {
     STONE(2, "Stone", Stream.of(
         new SimpleEntry<>("pickaxe", Stream.of(
             BlockDesc.TIN_ORE,
-            BlockDesc.COPPER_ORE).collect(Collectors.toList()))).collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue()))),
+            BlockDesc.COPPER_ORE,
+            BlockDesc.ALUMINUM_ORE).collect(Collectors.toList()))).collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue()))),
     BRONZE(3, "Bronze", Stream.of(
         new SimpleEntry<>("pickaxe", Stream.of(
-            BlockDesc.IRON_ORE,
-            BlockDesc.ALUMINUM_ORE).collect(Collectors.toList()))).collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue()))),
+            BlockDesc.IRON_ORE).collect(Collectors.toList()))).collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue()))),
     IRON(4, "Iron", Stream.of(
         new SimpleEntry<>("pickaxe", Stream.of(
             BlockDesc.NICKEL_ORE,
@@ -78,6 +82,16 @@ public enum HarvestLevel {
         this.name = name;
         this.map = map;
     }
+    
+    private static int getMaterialId(String name) {
+       for (Entry<Integer, ToolMaterial> entry : TConstructRegistry.toolMaterials.entrySet()) {
+          if (entry.getValue().materialName == name) {
+             return entry.getKey();
+          }
+       }
+       
+       throw new RuntimeException("invalid tool material");
+    }
 
     public static void apply(Logger logger) {
         // A few vanilla harvest levels get overridden in the static
@@ -89,35 +103,63 @@ public enum HarvestLevel {
             // TConstruct's map of names. TConstruct will use them, and WAILA.
             HarvestLevels.harvestLevelNames.put(harvestLevel.level, harvestLevel.name);
 
-            for (Entry<String, List<BlockDesc>> entry : harvestLevel.map.entrySet()) {
-                for (BlockDesc blockDesc : entry.getValue()) {
-                    for (BlockDescDetail blockDescDetail : blockDesc) {
-                        if (blockDescDetail.meta >= 0) {
-                            blockDescDetail.block.setHarvestLevel(
-                                entry.getKey(),
-                                harvestLevel.level,
-                                blockDescDetail.meta);
-                            logger.info(
-                                String.format(
-                                    "Set %s:%d to harvest level %s (%d)",
-                                    blockDescDetail.block.getUnlocalizedName(),
-                                    blockDescDetail.meta,
-                                    harvestLevel.name,
-                                    harvestLevel.level));
-                        } else {
-                            blockDescDetail.block.setHarvestLevel(
-                                entry.getKey(),
-                                harvestLevel.level);
-                            logger.info(
-                                String.format(
-                                    "Set %s:* to harvest level %s (%d)",
-                                    blockDescDetail.block.getUnlocalizedName(),
-                                    harvestLevel.name,
-                                    harvestLevel.level));
-                        }
-                    }
-                }
+            // For some reason the TCon materials are pretty much unmodifiable. Therefore,
+            // we need to create new materials. Oh, and there is no way to remove a tool
+            // material, so we'll also need to do an end run around the normal way of
+            // adding a material, and add it manually. Make sure this corresponds with
+            // TConstructRegistry.addToolMaterial() roughly.            
+            ToolMaterial oldMaterial = TConstructRegistry.getMaterial(harvestLevel.name);
+            
+            if (oldMaterial != null) {
+               ToolMaterial toolMaterial = new ToolMaterial(
+                  oldMaterial.materialName, 
+                  oldMaterial.localizationString, 
+                  harvestLevel.level, 
+                  oldMaterial.durability, 
+                  oldMaterial.miningspeed, 
+                  oldMaterial.attack, 
+                  oldMaterial.handleModifier, 
+                  oldMaterial.reinforced, 
+                  oldMaterial.stonebound, 
+                  oldMaterial.tipStyle, 
+                  oldMaterial.primaryColor);
+   
+               TConstructRegistry.toolMaterials.put(getMaterialId(harvestLevel.name), toolMaterial);
+               TConstructRegistry.toolMaterialStrings.put(harvestLevel.name, toolMaterial);
             }
+
+            for (Entry<String, List<BlockDesc>> entry : harvestLevel.map.entrySet()) {
+               for (BlockDesc blockDesc : entry.getValue()) {
+                  for (BlockDescDetail blockDescDetail : blockDesc) {
+                     // Setting the harvest level needs to done differently depending on
+                     // if we care about meta-data or not. If we do it without meta-data
+                     // then it will apply to all of the meta-data values.
+                     if (blockDescDetail.meta >= 0) {
+                         blockDescDetail.block.setHarvestLevel(
+                             entry.getKey(),
+                             harvestLevel.level,
+                             blockDescDetail.meta);
+                         logger.info(
+                             String.format(
+                                 "Set %s:%d to harvest level %s (%d)",
+                                 blockDescDetail.block.getUnlocalizedName(),
+                                 blockDescDetail.meta,
+                                 harvestLevel.name,
+                                 harvestLevel.level));
+                     } else {
+                         blockDescDetail.block.setHarvestLevel(
+                             entry.getKey(),
+                             harvestLevel.level);
+                         logger.info(
+                             String.format(
+                                 "Set %s:* to harvest level %s (%d)",
+                                 blockDescDetail.block.getUnlocalizedName(),
+                                 harvestLevel.name,
+                                 harvestLevel.level));
+                     }
+                 }
+              }
+           }
         }
     }
 }

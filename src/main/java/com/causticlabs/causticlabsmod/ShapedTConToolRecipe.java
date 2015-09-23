@@ -158,7 +158,6 @@ public class ShapedTConToolRecipe implements IRecipe {
          }
       }
 
-      // The only check left is to make sure we have the tool we want.
       return true;
    }
    
