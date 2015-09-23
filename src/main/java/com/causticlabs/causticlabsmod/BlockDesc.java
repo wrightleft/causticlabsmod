@@ -26,7 +26,9 @@ public enum BlockDesc implements Iterable<BlockDescDetail>{
     COAL_ORE(new BlockDescDetail(Blocks.coal_ore)),
     IRON_ORE(new BlockDescDetail(Blocks.iron_ore)),
     ALUMINUM_ORE(new BlockDescDetail(TinkerWorld.oreSlag, 5)),
-    REDSTONE_ORE("minecraft:redstone_ore"),
+    REDSTONE_ORE(Stream.of(
+       new BlockDescDetail(Blocks.redstone_ore),
+       new BlockDescDetail(Blocks.lit_redstone_ore)).collect(Collectors.toList())),
     LAPIS_ORE("minecraft:lapis_ore"),
     GOLD_ORE("minecraft:gold_ore"),
     OBSIDIAN("minecraft:obsidian"),

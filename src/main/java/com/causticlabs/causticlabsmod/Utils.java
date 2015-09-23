@@ -1,9 +1,13 @@
 package com.causticlabs.causticlabsmod;
 
+import java.util.Map.Entry;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+import tconstruct.library.TConstructRegistry;
+import tconstruct.library.tools.ToolMaterial;
 
 public class Utils {
 
@@ -21,5 +25,15 @@ public class Utils {
       } else {
          throw new RuntimeException("invalid ingredient");
       }
+   }
+   
+   public static int getMaterialID(String name) {
+      for (Entry<Integer, ToolMaterial> entry : TConstructRegistry.toolMaterials.entrySet()) {
+         if (entry.getValue().name() == name) {
+            return entry.getKey();
+         }
+      }
+      
+      throw new RuntimeException("invalid name");
    }
 }

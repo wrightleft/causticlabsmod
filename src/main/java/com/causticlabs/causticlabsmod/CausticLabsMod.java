@@ -6,6 +6,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -252,6 +253,9 @@ public class CausticLabsMod {
       
       // Add back the pickaxe head cast with the proper values, and limit the casting of 
       // casts to stone patterns only.
+      //
+      // The cost of the cast is the inverse of the cost of casting an item from the
+      // cast. Go figure. The total cost is a blank cast, which is 9.
       ItemStack pickaxeHeadCast = new ItemStack(TinkerSmeltery.metalPattern, 1, 2);
       TConstructRegistry.getTableCasting().addCastingRecipe(
          pickaxeHeadCast, 
@@ -259,11 +263,12 @@ public class CausticLabsMod {
          new ItemStack(TinkerTools.pickaxeHead, 1, 1), 
          true, 
          4 * 20);
+
       Map<Integer, Fluid> pickaxeCastingMaterials = 
          Stream.of(
             new SimpleEntry<>(MaterialID.Bronze, TinkerSmeltery.moltenBronzeFluid),
             new SimpleEntry<>(MaterialID.Iron, TinkerSmeltery.moltenIronFluid),
-            // Invar
+            new SimpleEntry<>(Utils.getMaterialID("Invar"), TinkerSmeltery.moltenInvarFluid),
             new SimpleEntry<>(MaterialID.Steel, TinkerSmeltery.moltenSteelFluid),
             new SimpleEntry<>(MaterialID.Obsidian, TinkerSmeltery.moltenObsidianFluid),
             // Dark Steel
