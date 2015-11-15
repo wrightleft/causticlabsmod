@@ -5,6 +5,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.init.Blocks;
@@ -23,6 +24,8 @@ import java.util.AbstractMap.SimpleEntry;
 
 import org.apache.logging.log4j.Logger;
 
+import cofh.api.modhelpers.ThermalExpansionHelper;
+import cofh.lib.util.helpers.ItemHelper;
 import tconstruct.TConstruct;
 import tconstruct.library.TConstructRegistry;
 import tconstruct.library.crafting.PatternBuilder;
@@ -38,27 +41,29 @@ import tconstruct.weaponry.TinkerWeaponry;
 //
 // denseores
 // Iguana's Tinkers Tweaks
-@Mod(modid = CausticLabsMod.MODID, name = CausticLabsMod.NAME, version = CausticLabsMod.VERSION, dependencies = "required-after:TConstruct;required-after:ThermalFoundation")
+@Mod(modid = CausticLabsMod.MODID, name = CausticLabsMod.NAME, version = CausticLabsMod.VERSION, dependencies = "required-after:TConstruct;required-after:ThermalFoundation;required-after:ThermalExpansion")
 public class CausticLabsMod {
    public static final String MODID = "causticlabsmod";
    public static final String NAME = "Caustic Labs Mod";
    public static final String VERSION = "1.7.10-1.0";
 
-   private Logger logger;
+   private static Logger logger;
 
-   private ItemStack anyHatchetHead;
-   private ItemStack anyShovelHead;
-   private ItemStack anyPickaxeHead;
-   private ItemStack anyKnifeBlade;
-   private ItemStack anyCrossbar;
-   private ItemStack anyBowLimb;
-   private ItemStack anyChiselHead;
+   private static ItemStack anyHatchetHead;
+   private static ItemStack anyShovelHead;
+   private static ItemStack anyPickaxeHead;
+   private static ItemStack anyKnifeBlade;
+   private static ItemStack anyCrossbar;
+   private static ItemStack anyBowLimb;
+   private static ItemStack anyChiselHead;
+   
+   private static ItemStack anyHatchet;
+   private static ItemStack anyChisel;
    
    @Mod.EventHandler
-   public void onEvent(FMLPreInitializationEvent event) {
-
+   public void onEvent(FMLPreInitializationEvent event) { 
       logger = event.getModLog();
-      
+
       anyHatchetHead = new ItemStack(TinkerTools.hatchetHead, 1, OreDictionary.WILDCARD_VALUE);
       anyShovelHead = new ItemStack(TinkerTools.shovelHead, 1, OreDictionary.WILDCARD_VALUE);
       anyPickaxeHead = new ItemStack(TinkerTools.pickaxeHead, 1, OreDictionary.WILDCARD_VALUE);
@@ -66,12 +71,33 @@ public class CausticLabsMod {
       anyCrossbar = new ItemStack(TinkerTools.crossbar, 1, OreDictionary.WILDCARD_VALUE);
       anyBowLimb = new ItemStack(TinkerWeaponry.partBowLimb, 1, OreDictionary.WILDCARD_VALUE);
       anyChiselHead = new ItemStack(TinkerTools.chiselHead, 1, OreDictionary.WILDCARD_VALUE);
+      
+      anyHatchet = new ItemStack(TinkerTools.hatchet, 1, OreDictionary.WILDCARD_VALUE);
+      anyChisel = new ItemStack(TinkerTools.chisel, 1, OreDictionary.WILDCARD_VALUE);
+   }
+
+   @Mod.EventHandler
+   public void onEvent(FMLInitializationEvent event) {
+      MinecraftForge.EVENT_BUS.register(new BlockEventHandler());
+      MinecraftForge.EVENT_BUS.register(new PlayerEventHandler());
+      FMLCommonHandler.instance().bus().register(new ItemCraftedEventHandler());
+   }
+
+   @Mod.EventHandler
+   public void onEvent(FMLPostInitializationEvent event) {
+      // This is where you put things that will interact with other mods.
+      
+      HarvestLevel.apply(logger);
+      Steel.apply(logger);
 
       // Adding this recipe causes any modification normally done in the tool
       // station or forge to be available in normal crafting station or just
-      // the inventory crafting grid.
+      // the inventory crafting grid. Such as repairing a tool, or adding redstone.
+      // This will help eliminate the tool forge and tool builder.
       GameRegistry.addRecipe(new ShapelessTConModRecipe());
 
+      
+      
       // Fix the ore dictionary for TCon in a couple of places to make the
       // recipes easier.
       
@@ -89,8 +115,15 @@ public class CausticLabsMod {
       // Make every kind of string available as a binding.
       OreDictionary.registerOre("materialBinding", new ItemStack(Items.string, 1, OreDictionary.WILDCARD_VALUE));
 
+      
+      
       // Add recipes for tool parts and tools. This helps us bypasses the stupid pattern
-      // system and the part builder nonsense.
+      // system and the part builder nonsense and make tools right in the crafting
+      // table.
+      //
+      // Most of these tools have multiple recipes to make things easier. Such as a slanted
+      // one and a up and down one. Nearly all of the Shaped recipes are also mirrored for
+      // convenience. 
 
       // Hatchet
       GameRegistry.addRecipe(new ShapedTConToolRecipe(
@@ -193,9 +226,6 @@ public class CausticLabsMod {
       // a lot of sense, but is strangely not straight forward. The idea here is
       // that we can't turn a log into planks with our bare hands, we need a tool.
 
-      // Make some generic tools that the recipes can use.
-      ItemStack anyHatchet = new ItemStack(TinkerTools.hatchet, 1, OreDictionary.WILDCARD_VALUE);
-
       GameRegistry.addRecipe(new ShapelessUseTConToolRecipe(new ItemStack(Blocks.planks, 1, 0), 20,
          new ItemStack(Blocks.log, 1, 0), anyHatchet));
       GameRegistry.addRecipe(new ShapelessUseTConToolRecipe(new ItemStack(Blocks.planks, 1, 1), 20,
@@ -214,25 +244,12 @@ public class CausticLabsMod {
 
       GameRegistry.addRecipe(
          new ShapelessUseTConToolRecipe(new ItemStack(TinkerTools.crossbar, 1), 10, "stickWood", anyHatchet));
-   }
-
-   @Mod.EventHandler
-   public void onEvent(FMLInitializationEvent event) {
-      MinecraftForge.EVENT_BUS.register(new BlockEventHandler());
-      MinecraftForge.EVENT_BUS.register(new PlayerEventHandler());
-      FMLCommonHandler.instance().bus().register(new ItemCraftedEventHandler());
-   }
-
-   @Mod.EventHandler
-   public void onEvent(FMLPostInitializationEvent event) {
-      HarvestLevel.apply(logger);
-
-      // This code is in here, the post initialization event, because the 
-      // pattern builder wasn't ready to go during normal initialization.
       
-      // Create some default tools that any recipe can use.
-      ItemStack anyChisel = new ItemStack(TinkerTools.chisel, 1, OreDictionary.WILDCARD_VALUE);
+      
+      
 
+      
+      
       // Pickaxe Head
       GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
          PatternBuilder.instance.getToolPart(
@@ -256,6 +273,9 @@ public class CausticLabsMod {
       //
       // The cost of the cast is the inverse of the cost of casting an item from the
       // cast. Go figure. The total cost is a blank cast, which is 9.
+      // 
+      // The magic number 20 is the ticks per second. So 4 * 20 is 4 seconds.
+      
       ItemStack pickaxeHeadCast = new ItemStack(TinkerSmeltery.metalPattern, 1, 2);
       TConstructRegistry.getTableCasting().addCastingRecipe(
          pickaxeHeadCast, 
@@ -271,7 +291,7 @@ public class CausticLabsMod {
             new SimpleEntry<>(Utils.getMaterialID("Invar"), TinkerSmeltery.moltenInvarFluid),
             new SimpleEntry<>(MaterialID.Steel, TinkerSmeltery.moltenSteelFluid),
             new SimpleEntry<>(MaterialID.Obsidian, TinkerSmeltery.moltenObsidianFluid),
-            // Dark Steel
+            // Dark Steel (Ender IO)
             new SimpleEntry<>(MaterialID.Alumite, TinkerSmeltery.moltenAlumiteFluid),
             new SimpleEntry<>(MaterialID.Ardite, TinkerSmeltery.moltenArditeFluid),
             new SimpleEntry<>(MaterialID.Cobalt, TinkerSmeltery.moltenCobaltFluid),
