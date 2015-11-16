@@ -14,10 +14,12 @@ public class Steel {
       // Remove all steel induction smelter recipes. We'll add our own.
       
       // Don't allow iron dust and two coal dusts.
-      ItemStack ironDust = ItemHelper.stack(GameData.getItemRegistry().getObject("ThermalFoundation:material"), 1);
       ThermalExpansionHelper.removeSmelterRecipe(
          ItemHelper.stack(GameData.getItemRegistry().getObject("ThermalFoundation:material"), 1), 
          ItemHelper.stack(GameData.getItemRegistry().getObject("ThermalFoundation:material"), 2, 2));
+      ThermalExpansionHelper.removeSmelterRecipe(
+         ItemHelper.stack(GameData.getItemRegistry().getObject("ThermalFoundation:material"), 2, 2),
+         ItemHelper.stack(GameData.getItemRegistry().getObject("ThermalFoundation:material"), 1));
       
       // Don't allow iron ingot and two coal dusts.
       ThermalExpansionHelper.removeSmelterRecipe(
