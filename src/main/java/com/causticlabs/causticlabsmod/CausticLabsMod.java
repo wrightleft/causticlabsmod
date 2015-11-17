@@ -81,8 +81,6 @@ public class CausticLabsMod {
       MinecraftForge.EVENT_BUS.register(new BlockEventHandler());
       MinecraftForge.EVENT_BUS.register(new PlayerEventHandler());
       FMLCommonHandler.instance().bus().register(new ItemCraftedEventHandler());
-      
-      Steel.apply(logger);
    }
 
    @Mod.EventHandler
@@ -90,6 +88,7 @@ public class CausticLabsMod {
       // This is where you put things that will interact with other mods.
       
       HarvestLevel.apply(logger);
+      Steel.apply(logger);
 
       // Adding this recipe causes any modification normally done in the tool
       // station or forge to be available in normal crafting station or just
