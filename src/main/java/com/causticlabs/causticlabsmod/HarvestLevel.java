@@ -26,7 +26,7 @@ public enum HarvestLevel {
             BlockDesc.GLOWSTONE).collect(Collectors.toList())),
         new SimpleEntry<>("shovel", Stream.of(
             BlockDesc.DIRT).collect(Collectors.toList()))).collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue()))),
-    WOOD(1, "Wood", Stream.of(
+    FLINT(1, "Flint", Stream.of(
         new SimpleEntry<>("pickaxe", Stream.of(
             BlockDesc.COAL_ORE,
             BlockDesc.STONE).collect(Collectors.toList())),
@@ -70,7 +70,7 @@ public enum HarvestLevel {
     COBALT(11, "Cobalt", new HashMap<String, List<BlockDesc>>()),
     MANYULLYN(12, "Manyullyn", new HashMap<String, List<BlockDesc>>());
 
-    private final int level;
+    public final int level;
     private final String name;
     private final Map<String, List<BlockDesc>> map;
 
