@@ -49,16 +49,16 @@ public class CausticLabsMod {
 
    private static Logger logger;
 
-   private static ItemStack anyHatchetHead;
-   private static ItemStack anyShovelHead;
-   private static ItemStack anyPickaxeHead;
-   private static ItemStack anyKnifeBlade;
-   private static ItemStack anyCrossbar;
-   private static ItemStack anyBowLimb;
-   private static ItemStack anyChiselHead;
+   public static ItemStack anyHatchetHead;
+   public static ItemStack anyShovelHead;
+   public static ItemStack anyPickaxeHead;
+   public static ItemStack anyKnifeBlade;
+   public static ItemStack anyCrossbar;
+   public static ItemStack anyBowLimb;
+   public static ItemStack anyChiselHead;
    
-   private static ItemStack anyHatchet;
-   private static ItemStack anyChisel;
+   public static ItemStack anyHatchet;
+   public static ItemStack anyChisel;
    
    @Mod.EventHandler
    public void onEvent(FMLPreInitializationEvent event) { 
@@ -86,9 +86,14 @@ public class CausticLabsMod {
    @Mod.EventHandler
    public void onEvent(FMLPostInitializationEvent event) {
       // This is where you put things that will interact with other mods.
+
+      // Remove all of the casting recipes for casts, and other ones that we want to change.
+      TConstructRegistry.getTableCasting().getCastingRecipes().removeIf(
+         recipe -> recipe.output.getItem() == TinkerSmeltery.metalPattern);
       
       HarvestLevel.apply(logger);
       Steel.apply(logger);
+      Pickaxe.apply(logger);
 
       // Adding this recipe causes any modification normally done in the tool
       // station or forge to be available in normal crafting station or just
@@ -157,22 +162,6 @@ public class CausticLabsMod {
             new Object[][] {{anyHatchetHead, null         , anyShovelHead},
                             {null          , "materialRod", null          }}));
 
-      // Pickaxe
-      GameRegistry.addRecipe(new ShapedTConToolRecipe(
-            anyPickaxeHead,
-            "materialRod", 
-            "materialBinding", 
-            new Object[][] {{anyPickaxeHead   },
-                            {"materialBinding"},
-                            {"materialRod"    }}));
-      GameRegistry.addRecipe(new ShapedTConToolRecipe(
-            anyPickaxeHead,
-            "materialRod", 
-            "materialBinding", 
-            new Object[][] {{null         , null             , anyPickaxeHead   },
-                            {null         , "materialBinding", null             },
-                            {"materialRod", null             , null             }}));
-
       // Dagger
       GameRegistry.addRecipe(new ShapedTConToolRecipe(
             anyKnifeBlade,
@@ -210,100 +199,37 @@ public class CausticLabsMod {
             new Object[][] {{null         , anyKnifeBlade},
                             {"materialRod", null         }}));
 
-      // Chisel
-      GameRegistry.addRecipe(new ShapedTConToolRecipe(
-            anyChiselHead,
-            "materialRod",
-            new Object[][] {{anyChiselHead},
-                            {"materialRod"}}));
-      GameRegistry.addRecipe(new ShapedTConToolRecipe(
-            anyChiselHead,
-            "materialRod",
-            new Object[][] {{null         , anyChiselHead},
-                            {"materialRod", null         }}));
-
       // Add recipes that use TCon tools in a way that damages them. This makes
       // a lot of sense, but is strangely not straight forward. The idea here is
       // that we can't turn a log into planks with our bare hands, we need a tool.
 
       GameRegistry.addRecipe(new ShapelessUseTConToolRecipe(new ItemStack(Blocks.planks, 1, 0), 20,
-         new ItemStack(Blocks.log, 1, 0), anyHatchet));
+         HarvestLevel.FLINT, new ItemStack(Blocks.log, 1, 0), anyHatchet));
       GameRegistry.addRecipe(new ShapelessUseTConToolRecipe(new ItemStack(Blocks.planks, 1, 1), 20,
-         new ItemStack(Blocks.log, 1, 1), anyHatchet));
+         HarvestLevel.FLINT, new ItemStack(Blocks.log, 1, 1), anyHatchet));
       GameRegistry.addRecipe(new ShapelessUseTConToolRecipe(new ItemStack(Blocks.planks, 1, 2), 20,
-         new ItemStack(Blocks.log, 1, 2), anyHatchet));
+         HarvestLevel.FLINT, new ItemStack(Blocks.log, 1, 2), anyHatchet));
       GameRegistry.addRecipe(new ShapelessUseTConToolRecipe(new ItemStack(Blocks.planks, 1, 3), 20,
-         new ItemStack(Blocks.log, 1, 3), anyHatchet));
+         HarvestLevel.FLINT, new ItemStack(Blocks.log, 1, 3), anyHatchet));
       GameRegistry.addRecipe(new ShapelessUseTConToolRecipe(new ItemStack(Blocks.planks, 1, 4), 20,
-         new ItemStack(Blocks.log2, 1, 0), anyHatchet));
+         HarvestLevel.FLINT, new ItemStack(Blocks.log2, 1, 0), anyHatchet));
       GameRegistry.addRecipe(new ShapelessUseTConToolRecipe(new ItemStack(Blocks.planks, 1, 5), 20,
-         new ItemStack(Blocks.log2, 1, 1), anyHatchet));
+         HarvestLevel.FLINT, new ItemStack(Blocks.log2, 1, 1), anyHatchet));
 
       GameRegistry.addRecipe(
-         new ShapelessUseTConToolRecipe(new ItemStack(Items.stick, 2), 10, "plankWood", anyHatchet));
+         new ShapelessUseTConToolRecipe(new ItemStack(Items.stick, 2), 10, 
+            HarvestLevel.FLINT, "plankWood", anyHatchet));
 
       GameRegistry.addRecipe(
-         new ShapelessUseTConToolRecipe(new ItemStack(TinkerTools.crossbar, 1), 10, "stickWood", anyHatchet));
+         new ShapelessUseTConToolRecipe(new ItemStack(TinkerTools.crossbar, 1), 10, 
+            HarvestLevel.FLINT, "stickWood", anyHatchet));
       
       
       
 
       
       
-      // Pickaxe Head
-      GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
-         PatternBuilder.instance.getToolPart(
-            new ItemStack(Blocks.stone),
-            TConstructRegistry.getItemStack("pickaxeHeadPattern"), 
-            null)[0], 
-         20, 
-         anyChisel, 
-         new Object[][] {{"stone", "stone", null   }, 
-                         {null   , "stone", "stone"}, 
-                         {null   , null   , "stone"}}));
       
-      // Remove all of the casting recipes for casts, and other ones that we want to change.
-      TConstructRegistry.getTableCasting().getCastingRecipes().removeIf(
-         recipe -> 
-            (recipe.output.getItem() == TinkerSmeltery.metalPattern) ||
-            (recipe.output.getItem() == TinkerTools.pickaxeHead));
-      
-      // Add back the pickaxe head cast with the proper values, and limit the casting of 
-      // casts to stone patterns only.
-      //
-      // The cost of the cast is the inverse of the cost of casting an item from the
-      // cast. Go figure. The total cost is a blank cast, which is 9.
-      // 
-      // The magic number 20 is the ticks per second. So 4 * 20 is 4 seconds.
-      
-      ItemStack pickaxeHeadCast = new ItemStack(TinkerSmeltery.metalPattern, 1, 2);
-      TConstructRegistry.getTableCasting().addCastingRecipe(
-         pickaxeHeadCast, 
-         new FluidStack(TinkerSmeltery.moltenAlubrassFluid, TConstruct.ingotLiquidValue * 4), 
-         new ItemStack(TinkerTools.pickaxeHead, 1, 1), 
-         true, 
-         4 * 20);
-
-      Map<Integer, Fluid> pickaxeCastingMaterials = 
-         Stream.of(
-            new SimpleEntry<>(MaterialID.Bronze, TinkerSmeltery.moltenBronzeFluid),
-            new SimpleEntry<>(MaterialID.Iron, TinkerSmeltery.moltenIronFluid),
-            new SimpleEntry<>(Utils.getMaterialID("Invar"), TinkerSmeltery.moltenInvarFluid),
-            new SimpleEntry<>(MaterialID.Steel, TinkerSmeltery.moltenSteelFluid),
-            new SimpleEntry<>(MaterialID.Obsidian, TinkerSmeltery.moltenObsidianFluid),
-            // Dark Steel (Ender IO)
-            new SimpleEntry<>(MaterialID.Alumite, TinkerSmeltery.moltenAlumiteFluid),
-            new SimpleEntry<>(MaterialID.Ardite, TinkerSmeltery.moltenArditeFluid),
-            new SimpleEntry<>(MaterialID.Cobalt, TinkerSmeltery.moltenCobaltFluid),
-            new SimpleEntry<>(MaterialID.Manyullyn, TinkerSmeltery.moltenManyullynFluid)).collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue()));
-      for (Entry<Integer, Fluid> entry : pickaxeCastingMaterials.entrySet()) {
-         TConstructRegistry.getTableCasting().addCastingRecipe(
-            new ItemStack(TinkerTools.pickaxeHead, 1, entry.getKey()),
-            new FluidStack(entry.getValue(), TConstruct.ingotLiquidValue * 5),
-            pickaxeHeadCast,
-            false,
-            5 * 20);
-      }
    }
 
 }
