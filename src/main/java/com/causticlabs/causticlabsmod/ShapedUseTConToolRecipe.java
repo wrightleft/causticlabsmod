@@ -12,7 +12,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import tconstruct.library.tools.HarvestTool;
 import tconstruct.library.tools.ToolCore;
+import tconstruct.tools.TinkerTools;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -28,15 +30,20 @@ public class ShapedUseTConToolRecipe extends UseTConToolRecipe {
             RecipeSorter.Category.SHAPED, "");
    }
 
-   private ItemStack tool;
+   private ToolCore neededTool;
    private int width = 0;
    private int height = 0;
    private final List<Object> ingredients = new ArrayList<>();
 
-   public ShapedUseTConToolRecipe(ItemStack result, int damage, ItemStack tool, Object[][] recipe) {
-      super(result, damage);
-
-      this.tool = tool;
+   public ShapedUseTConToolRecipe(
+         ItemStack result, 
+         int damage, 
+         ToolCore tool, 
+         HarvestLevel neededHarvestLevel, 
+         Object[][] recipe) {
+      super(result, damage, neededHarvestLevel);
+      
+      this.neededTool = tool;
 
       // The height of the recipe is simply the number of rows.
       height = recipe.length;
@@ -61,16 +68,16 @@ public class ShapedUseTConToolRecipe extends UseTConToolRecipe {
    }
 
    @Override
-   public boolean matches(InventoryCrafting inventoryCrafting) {
+   public boolean matches(InventoryCrafting inventory) {      
       // Use a couple of for loops to see if different parts of the overall
       // crafting grid match the shaped recipe we're looking for.
       for (int x = 0; x <= 3 - width; x++) {
          for (int y = 0; y <= 3 - height; ++y) {
             // Try matching normally first, and then mirrored. Either one is
             // good.
-            if (submatches(inventoryCrafting, x, y, false)) {
+            if (submatches(inventory, x, y, false)) {
                return true;
-            } else if (submatches(inventoryCrafting, x, y, true)) {
+            } else if (submatches(inventory, x, y, true)) {
                return true;
             }
          }
@@ -79,14 +86,18 @@ public class ShapedUseTConToolRecipe extends UseTConToolRecipe {
       return false;
    }
 
-   private boolean submatches(InventoryCrafting inventory, int startX, int startY, boolean mirror) {
+   private boolean submatches(
+         InventoryCrafting inventory, 
+         int startX, 
+         int startY, 
+         boolean mirror) {
       boolean toolProvided = false;
-
+      
       for (int x = 0; x < 3; ++x) {
          for (int y = 0; y < 3; ++y) {
             // Get the ingredient the recipe says we need. This is complicated
-            // by the fact that
-            // the recipe can spacially move throughout the crafting grid.
+            // by the fact that the recipe can spatially move throughout the 
+            // crafting grid.
             int subX = x - startX;
             int subY = y - startY;
             Object neededIngredient = null;
@@ -150,17 +161,14 @@ public class ShapedUseTConToolRecipe extends UseTConToolRecipe {
                      return false;
                   } else {
                      // We still need a tool, so we need to make sure this is
-                     // the tool we want, and that it isn't broken.
-                     if (providedIngredient.getItem() == tool.getItem()) {
-                        // This is the right tool.
-                        if (!providedIngredient.getTagCompound().getCompoundTag("InfiTool").getBoolean("Broken")) {
-                           // We found the tool we were looking for. So prevent
-                           // any other tools from messing us up.
-                           toolProvided = true;
-                        } else {
-                           // The tool was broken.
-                           return false;
-                        }
+                     // the tool we want, that it isn't broken, and that it
+                     // has a high enough harvest level.
+                     if ((providedIngredient.getItem() == neededTool) &&
+                        notBroken(providedIngredient) && 
+                        canHarvest(providedIngredient)) {
+                           // This tool is perfect. So flag any other tools 
+                           // as a problem.
+                           toolProvided = true;   
                      } else {
                         // Not the tool we're looking for.
                         return false;
@@ -176,7 +184,8 @@ public class ShapedUseTConToolRecipe extends UseTConToolRecipe {
          }
       }
 
-      // The only check left is to make sure we have the tool we want.
+      // If we made it here, all of the needed ingredients are there, but 
+      // the tool may still be missing.
       return toolProvided;
    }
 

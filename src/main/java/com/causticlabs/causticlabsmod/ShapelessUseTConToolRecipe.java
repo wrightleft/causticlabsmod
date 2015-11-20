@@ -32,8 +32,12 @@ public class ShapelessUseTConToolRecipe extends UseTConToolRecipe {
             RecipeSorter.Category.SHAPELESS, "");
    }
 
-   public ShapelessUseTConToolRecipe(ItemStack result, int damage, Object... ingredients) {
-      super(result, damage);
+   public ShapelessUseTConToolRecipe(
+         ItemStack result, 
+         int damage,  
+         HarvestLevel neededHarvestLevel, 
+         Object... ingredients) {
+      super(result, damage, neededHarvestLevel);
 
       // Build our list of ingredients by converting whatever object we got
       // into an ItemStack or a list of ItemStacks.
@@ -56,7 +60,7 @@ public class ShapelessUseTConToolRecipe extends UseTConToolRecipe {
                         // The needed ingredient is a TCon tool, then
                         // all we need to do is to make sure the provided one
                         // isn't broken.
-                        return !providedIngredient.getTagCompound().getCompoundTag("InfiTool").getBoolean("Broken");
+                        return notBroken(providedIngredient) && canHarvest(providedIngredient);
                      } else {
                         // The item we're trying to match isn't the tool. So we
                         // can apply the normal rules of matching, which is

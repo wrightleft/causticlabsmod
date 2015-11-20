@@ -20,10 +20,12 @@ public abstract class UseTConToolRecipe implements IUseTConToolRecipe {
 
    private final ItemStack result;
    private final int damage;
+   private HarvestLevel neededHarvestLevel;
 
-   UseTConToolRecipe(ItemStack result, int damage) {
+   public UseTConToolRecipe(ItemStack result, int damage, HarvestLevel neededHarvestLevel) {
       this.result = result;
       this.damage = damage;
+      this.neededHarvestLevel = neededHarvestLevel;
    }
 
    @Override
@@ -61,4 +63,13 @@ public abstract class UseTConToolRecipe implements IUseTConToolRecipe {
       }
    }
 
+   public boolean notBroken(ItemStack providedIngredient) {
+      return !providedIngredient.getTagCompound().getCompoundTag("InfiTool").getBoolean("Broken");
+   }
+
+   public boolean canHarvest(ItemStack tool) {
+      return 
+         tool.getTagCompound().getCompoundTag("InfiTool").getInteger("HarvestLevel") >= 
+         neededHarvestLevel.level;
+   }
 }
