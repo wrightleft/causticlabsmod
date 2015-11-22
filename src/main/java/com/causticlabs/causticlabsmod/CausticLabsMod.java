@@ -39,9 +39,6 @@ public class CausticLabsMod {
    public static ItemStack anyBowLimb;
    public static ItemStack anyChiselHead;
    
-   public static ItemStack anyHatchet;
-   public static ItemStack anyChisel;
-   
    @Mod.EventHandler
    public void onEvent(FMLPreInitializationEvent event) { 
       logger = event.getModLog();
@@ -53,9 +50,6 @@ public class CausticLabsMod {
       anyCrossbar = new ItemStack(TinkerTools.crossbar, 1, OreDictionary.WILDCARD_VALUE);
       anyBowLimb = new ItemStack(TinkerWeaponry.partBowLimb, 1, OreDictionary.WILDCARD_VALUE);
       anyChiselHead = new ItemStack(TinkerTools.chiselHead, 1, OreDictionary.WILDCARD_VALUE);
-      
-      anyHatchet = new ItemStack(TinkerTools.hatchet, 1, OreDictionary.WILDCARD_VALUE);
-      anyChisel = new ItemStack(TinkerTools.chisel, 1, OreDictionary.WILDCARD_VALUE);
    }
 
    @Mod.EventHandler
@@ -77,11 +71,14 @@ public class CausticLabsMod {
       Steel.apply(logger);
       Pickaxe.apply(logger);
       Chisel.apply(logger);
+      Hatchet.apply(logger);
+      Planks.apply(logger); 
 
       // Adding this recipe causes any modification normally done in the tool
       // station or forge to be available in normal crafting station or just
       // the inventory crafting grid. Such as repairing a tool, or adding redstone.
-      // This will help eliminate the tool forge and tool builder.
+      // This will help eliminate the tool forge and tool builder, which are
+      // a needless complexity.
       GameRegistry.addRecipe(new ShapelessTConModRecipe());
 
       
@@ -112,18 +109,6 @@ public class CausticLabsMod {
       // Most of these tools have multiple recipes to make things easier. Such as a slanted
       // one and a up and down one. Nearly all of the Shaped recipes are also mirrored for
       // convenience. 
-
-      // Hatchet
-      GameRegistry.addRecipe(new ShapedTConToolRecipe(
-         anyHatchetHead, 
-         "materialRod", 
-         new Object[][] {{anyHatchetHead},
-                         {"materialRod" }}));
-      GameRegistry.addRecipe(new ShapedTConToolRecipe(
-         anyHatchetHead, 
-         "materialRod", 
-         new Object[][] {{null         , anyHatchetHead},
-                         {"materialRod", null          }}));
 
       // Shovel
       GameRegistry.addRecipe(new ShapedTConToolRecipe(
@@ -186,26 +171,13 @@ public class CausticLabsMod {
       // a lot of sense, but is strangely not straight forward. The idea here is
       // that we can't turn a log into planks with our bare hands, we need a tool.
 
-      GameRegistry.addRecipe(new ShapelessUseTConToolRecipe(new ItemStack(Blocks.planks, 1, 0), 20,
-         HarvestLevel.FLINT, new ItemStack(Blocks.log, 1, 0), anyHatchet));
-      GameRegistry.addRecipe(new ShapelessUseTConToolRecipe(new ItemStack(Blocks.planks, 1, 1), 20,
-         HarvestLevel.FLINT, new ItemStack(Blocks.log, 1, 1), anyHatchet));
-      GameRegistry.addRecipe(new ShapelessUseTConToolRecipe(new ItemStack(Blocks.planks, 1, 2), 20,
-         HarvestLevel.FLINT, new ItemStack(Blocks.log, 1, 2), anyHatchet));
-      GameRegistry.addRecipe(new ShapelessUseTConToolRecipe(new ItemStack(Blocks.planks, 1, 3), 20,
-         HarvestLevel.FLINT, new ItemStack(Blocks.log, 1, 3), anyHatchet));
-      GameRegistry.addRecipe(new ShapelessUseTConToolRecipe(new ItemStack(Blocks.planks, 1, 4), 20,
-         HarvestLevel.FLINT, new ItemStack(Blocks.log2, 1, 0), anyHatchet));
-      GameRegistry.addRecipe(new ShapelessUseTConToolRecipe(new ItemStack(Blocks.planks, 1, 5), 20,
-         HarvestLevel.FLINT, new ItemStack(Blocks.log2, 1, 1), anyHatchet));
-
       GameRegistry.addRecipe(
          new ShapelessUseTConToolRecipe(new ItemStack(Items.stick, 2), 10, 
-            HarvestLevel.FLINT, "plankWood", anyHatchet));
+            HarvestLevel.FLINT, "plankWood", TinkerTools.hatchet));
 
       GameRegistry.addRecipe(
          new ShapelessUseTConToolRecipe(new ItemStack(TinkerTools.crossbar, 1), 10, 
-            HarvestLevel.FLINT, "stickWood", anyHatchet));
+            HarvestLevel.FLINT, "stickWood", TinkerTools.hatchet));
       
       
       
