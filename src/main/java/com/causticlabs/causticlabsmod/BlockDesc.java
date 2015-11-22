@@ -1,16 +1,12 @@
 package com.causticlabs.causticlabsmod;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import tconstruct.world.TinkerWorld;
-
-import java.util.AbstractMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import net.minecraft.init.Blocks;
+import tconstruct.world.TinkerWorld;
 
 // We don't need to worry about the dense ores, as they take on the harvest
 // level of their counter part automatically.

@@ -2,11 +2,9 @@ package com.causticlabs.causticlabsmod;
 
 import java.util.Map.Entry;
 
-import cpw.mods.fml.common.event.FMLInterModComms;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 import tconstruct.library.TConstructRegistry;
 import tconstruct.library.tools.ToolMaterial;

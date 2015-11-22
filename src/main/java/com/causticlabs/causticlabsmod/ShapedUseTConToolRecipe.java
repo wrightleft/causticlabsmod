@@ -1,24 +1,13 @@
 package com.causticlabs.causticlabsmod;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import tconstruct.library.tools.HarvestTool;
 import tconstruct.library.tools.ToolCore;
-import tconstruct.tools.TinkerTools;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 // This class provides a recipe that uses the TCon tool and some ingredients.
 // The ingredients are shaped, but the tool can be anywhere. You'll have to

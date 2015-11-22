@@ -1,19 +1,15 @@
 package com.causticlabs.causticlabsmod;
 
-import net.minecraft.init.Items;
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 import tconstruct.library.crafting.ToolBuilder;
-import tconstruct.library.tools.ToolCore;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ShapedTConToolRecipe implements IRecipe {
 

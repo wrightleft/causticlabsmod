@@ -1,24 +1,19 @@
 package com.causticlabs.causticlabsmod;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.oredict.OreDictionary;
-import org.apache.logging.log4j.Logger;
-
-import tconstruct.library.TConstructRegistry;
-import tconstruct.library.tools.ToolMaterial;
-import tconstruct.library.util.HarvestLevels;
-import tconstruct.tools.TinkerTools;
-import tconstruct.world.TinkerWorld;
-
-import java.util.*;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.apache.logging.log4j.Logger;
+
+import net.minecraftforge.common.ForgeHooks;
+import tconstruct.library.TConstructRegistry;
+import tconstruct.library.tools.ToolMaterial;
+import tconstruct.library.util.HarvestLevels;
 
 public enum HarvestLevel {
     HAND(0, "Hand", Stream.of(

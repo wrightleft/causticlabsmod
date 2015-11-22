@@ -1,14 +1,11 @@
 package com.causticlabs.causticlabsmod;
 
 import org.apache.logging.log4j.Logger;
+
 import cofh.api.modhelpers.ThermalExpansionHelper;
 import cofh.lib.util.helpers.ItemHelper;
-import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.registry.GameData;
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.oredict.OreDictionary;
 
 // Steel is only an alloy. It cannot be mined.
 public class Steel {

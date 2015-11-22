@@ -1,15 +1,17 @@
 package com.causticlabs.causticlabsmod;
 
-import java.util.Map;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.logging.log4j.Logger;
 
+import cofh.lib.util.helpers.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -43,11 +45,19 @@ public class Pickaxe {
                          {null         , "materialBinding", null             },
                          {"materialRod", null             , null             }}));
 
-      // Pickaxe Stone Heads
+      // Pickaxe Head Recipes
+
+      GameRegistry.addRecipe(ItemHelper.ShapedRecipe(
+         PatternBuilder.instance.getToolPart(
+            ItemHelper.stack(Items.flint),
+            TConstructRegistry.getItemStack("pickaxeHeadPattern"), 
+            null)[0],
+         "## ", " ##", "  #",
+         '#', "itemFlint"));
       
       GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
          PatternBuilder.instance.getToolPart(
-            new ItemStack(Blocks.stone),
+            ItemHelper.stack(Blocks.stone),
             TConstructRegistry.getItemStack("pickaxeHeadPattern"), 
             null)[0], 
          10 * 5, 
@@ -59,7 +69,7 @@ public class Pickaxe {
 
       GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
          PatternBuilder.instance.getToolPart(
-            new ItemStack(Blocks.obsidian),
+            ItemHelper.stack(Blocks.obsidian),
             TConstructRegistry.getItemStack("pickaxeHeadPattern"), 
             null)[0], 
          100 * 5, 
@@ -87,7 +97,7 @@ public class Pickaxe {
       TConstructRegistry.getTableCasting().addCastingRecipe(
          pickaxeHeadCast, 
          new FluidStack(TinkerSmeltery.moltenAlubrassFluid, TConstruct.ingotLiquidValue * 4), 
-         new ItemStack(TinkerTools.pickaxeHead, 1, 1), 
+         ItemHelper.stack(TinkerTools.pickaxeHead, 1, 1), 
          true, // Do consume the stone pickaxe head.
          4 * 20);
 
@@ -107,7 +117,7 @@ public class Pickaxe {
                Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue()));
       for (Entry<Integer, Fluid> entry : pickaxeCastingMaterials.entrySet()) {
          TConstructRegistry.getTableCasting().addCastingRecipe(
-            new ItemStack(TinkerTools.pickaxeHead, 1, entry.getKey()),
+            ItemHelper.stack(TinkerTools.pickaxeHead, 1, entry.getKey()),
             new FluidStack(entry.getValue(), TConstruct.ingotLiquidValue * 5),
             pickaxeHeadCast,
             false, // Don't consume the cast.

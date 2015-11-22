@@ -1,6 +1,7 @@
 package com.causticlabs.causticlabsmod;
 
-import iguanaman.iguanatweakstconstruct.replacing.ModPartReplacement;
+import java.util.ArrayList;
+
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -9,8 +10,6 @@ import net.minecraftforge.oredict.RecipeSorter;
 import tconstruct.library.crafting.ModifyBuilder;
 import tconstruct.library.modifier.ItemModifier;
 import tconstruct.library.tools.ToolCore;
-
-import java.util.ArrayList;
 
 public class ShapelessTConModRecipe implements IRecipe{
     private ItemModifier modifier = null;

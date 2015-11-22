@@ -1,15 +1,9 @@
 package com.causticlabs.causticlabsmod;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.oredict.OreDictionary;
 import tconstruct.library.tools.ToolCore;
 import tconstruct.tools.TinkerTools;
 

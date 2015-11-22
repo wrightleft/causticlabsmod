@@ -1,39 +1,21 @@
 package com.causticlabs.causticlabsmod;
 
+import org.apache.logging.log4j.Logger;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
-
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.AbstractMap.SimpleEntry;
-
-import org.apache.logging.log4j.Logger;
-
-import cofh.api.modhelpers.ThermalExpansionHelper;
-import cofh.lib.util.helpers.ItemHelper;
-import tconstruct.TConstruct;
 import tconstruct.library.TConstructRegistry;
-import tconstruct.library.crafting.PatternBuilder;
-import tconstruct.library.tools.ToolMaterial;
 import tconstruct.smeltery.TinkerSmeltery;
 import tconstruct.tools.TinkerTools;
-import tconstruct.tools.TinkerTools.MaterialID;
-import tconstruct.tools.items.ToolPart;
 import tconstruct.weaponry.TinkerWeaponry;
 
 // There are a few more dependencies, but they have wildcard dependencies of their own which preclude us depending
