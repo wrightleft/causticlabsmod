@@ -94,6 +94,7 @@ public class CausticLabsMod {
       HarvestLevel.apply(logger);
       Steel.apply(logger);
       Pickaxe.apply(logger);
+      Chisel.apply(logger);
 
       // Adding this recipe causes any modification normally done in the tool
       // station or forge to be available in normal crafting station or just

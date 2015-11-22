@@ -50,7 +50,7 @@ public class Pickaxe {
             new ItemStack(Blocks.stone),
             TConstructRegistry.getItemStack("pickaxeHeadPattern"), 
             null)[0], 
-         20, 
+         10 * 5, 
          TinkerTools.chisel,
          HarvestLevel.FLINT,
          new Object[][] {{"stone", "stone", null   }, 
@@ -62,7 +62,7 @@ public class Pickaxe {
             new ItemStack(Blocks.obsidian),
             TConstructRegistry.getItemStack("pickaxeHeadPattern"), 
             null)[0], 
-         20, 
+         100 * 5, 
          TinkerTools.chisel,
          HarvestLevel.STEEL,
          new Object[][] {{"blockObsidian", "blockObsidian", null           }, 
@@ -93,16 +93,18 @@ public class Pickaxe {
 
       Map<Integer, Fluid> pickaxeCastingMaterials = 
          Stream.of(
+            // Stone must be chiseled, not cast
             new SimpleEntry<>(MaterialID.Bronze, TinkerSmeltery.moltenBronzeFluid),
             new SimpleEntry<>(MaterialID.Iron, TinkerSmeltery.moltenIronFluid),
             new SimpleEntry<>(Utils.getMaterialID("Invar"), TinkerSmeltery.moltenInvarFluid),
             new SimpleEntry<>(MaterialID.Steel, TinkerSmeltery.moltenSteelFluid),
-            new SimpleEntry<>(MaterialID.Obsidian, TinkerSmeltery.moltenObsidianFluid),
+            // Obsidian must be chiseled, not cast
             // Dark Steel (Ender IO)
             new SimpleEntry<>(MaterialID.Alumite, TinkerSmeltery.moltenAlumiteFluid),
             new SimpleEntry<>(MaterialID.Ardite, TinkerSmeltery.moltenArditeFluid),
             new SimpleEntry<>(MaterialID.Cobalt, TinkerSmeltery.moltenCobaltFluid),
-            new SimpleEntry<>(MaterialID.Manyullyn, TinkerSmeltery.moltenManyullynFluid)).collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue()));
+            new SimpleEntry<>(MaterialID.Manyullyn, TinkerSmeltery.moltenManyullynFluid)).collect(
+               Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue()));
       for (Entry<Integer, Fluid> entry : pickaxeCastingMaterials.entrySet()) {
          TConstructRegistry.getTableCasting().addCastingRecipe(
             new ItemStack(TinkerTools.pickaxeHead, 1, entry.getKey()),
