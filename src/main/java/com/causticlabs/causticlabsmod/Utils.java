@@ -27,13 +27,4 @@ public class Utils {
       }
    }
    
-   public static int getMaterialID(String name) {
-      for (Entry<Integer, ToolMaterial> entry : TConstructRegistry.toolMaterials.entrySet()) {
-         if (entry.getValue().name() == name) {
-            return entry.getKey();
-         }
-      }
-      
-      throw new RuntimeException("invalid name");
-   }
 }

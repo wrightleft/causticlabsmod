@@ -8,6 +8,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import tconstruct.library.TConstructRegistry;
 import tconstruct.library.crafting.PatternBuilder;
+import tconstruct.tools.TinkerTools;
 
 public class Hatchet {
    public static void apply(Logger logger) {
@@ -30,12 +31,8 @@ public class Hatchet {
       // Hatchet Head Recipes
       
       GameRegistry.addRecipe(ItemHelper.ShapedRecipe(
-         PatternBuilder.instance.getToolPart(
-            new ItemStack(Items.flint),
-            TConstructRegistry.getItemStack("hatchetHeadPattern"), 
-            null)[0],
+         new ItemStack(TinkerTools.hatchetHead, 1, Material.Flint.id()),
          "##", "##",
          '#', "itemFlint"));
    }
-
 }

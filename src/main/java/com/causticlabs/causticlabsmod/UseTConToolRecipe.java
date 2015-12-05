@@ -12,19 +12,19 @@ import tconstruct.tools.TinkerTools;
 // being consumed.
 public abstract class UseTConToolRecipe implements IUseTConToolRecipe {
 
-   private final ItemStack result;
-   private final int damage;
-   private HarvestLevel neededHarvestLevel;
+   private final ItemStack _result;
+   private final int _damage;
+   private final int _neededHarvestLevel;
 
-   public UseTConToolRecipe(ItemStack result, int damage, HarvestLevel neededHarvestLevel) {
-      this.result = result;
-      this.damage = damage;
-      this.neededHarvestLevel = neededHarvestLevel;
+   public UseTConToolRecipe(ItemStack result, int damage, int neededHarvestLevel) {
+      _result = result;
+      _damage = damage;
+      _neededHarvestLevel = neededHarvestLevel;
    }
 
    @Override
    public ItemStack getCraftingResult(InventoryCrafting inventoryCrafting) {
-      return result.copy();
+      return _result.copy();
    }
 
    @Override
@@ -43,7 +43,7 @@ public abstract class UseTConToolRecipe implements IUseTConToolRecipe {
          ItemStack providedIngredient = inventoryCrafting.getStackInSlot(i);
          if (providedIngredient != null) {
             if (providedIngredient.getItem() instanceof ToolCore) {
-               tconstruct.library.tools.AbilityHelper.damageTool(providedIngredient, damage, player, false);
+               tconstruct.library.tools.AbilityHelper.damageTool(providedIngredient, _damage, player, false);
 
                // The chisel already handles not consuming itself during
                // crafting. None of the other tools do though. The method
@@ -64,6 +64,6 @@ public abstract class UseTConToolRecipe implements IUseTConToolRecipe {
    public boolean canHarvest(ItemStack tool) {
       return 
          tool.getTagCompound().getCompoundTag("InfiTool").getInteger("HarvestLevel") >= 
-         neededHarvestLevel.level;
+         _neededHarvestLevel;
    }
 }

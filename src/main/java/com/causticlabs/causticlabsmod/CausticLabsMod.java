@@ -11,6 +11,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 import tconstruct.library.TConstructRegistry;
@@ -61,13 +62,19 @@ public class CausticLabsMod {
 
    @Mod.EventHandler
    public void onEvent(FMLPostInitializationEvent event) {
+      // A few vanilla harvest levels get overridden in the static
+      // initialization of this ForgeHooks class. Best to get it out of the way 
+      // first.
+      new ForgeHooks();
+      
       // This is where you put things that will interact with other mods.
 
       // Remove all of the casting recipes for casts, and other ones that we want to change.
       TConstructRegistry.getTableCasting().getCastingRecipes().removeIf(
          recipe -> recipe.output.getItem() == TinkerSmeltery.metalPattern);
       
-      HarvestLevel.apply(logger);
+      Material.apply(logger);
+      //HarvestLevel.apply(logger);
       Steel.apply(logger);
       Pickaxe.apply(logger);
       Chisel.apply(logger);
@@ -173,11 +180,11 @@ public class CausticLabsMod {
 
       GameRegistry.addRecipe(
          new ShapelessUseTConToolRecipe(new ItemStack(Items.stick, 2), 10, 
-            HarvestLevel.FLINT, "plankWood", TinkerTools.hatchet));
+            Material.Flint.level(), "plankWood", TinkerTools.hatchet));
 
       GameRegistry.addRecipe(
          new ShapelessUseTConToolRecipe(new ItemStack(TinkerTools.crossbar, 1), 10, 
-            HarvestLevel.FLINT, "stickWood", TinkerTools.hatchet));
+            Material.Flint.level(), "stickWood", TinkerTools.hatchet));
       
       
       

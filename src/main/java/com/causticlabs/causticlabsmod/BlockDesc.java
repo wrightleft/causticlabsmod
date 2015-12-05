@@ -38,6 +38,8 @@ public enum BlockDesc implements Iterable<BlockDescDetail>{
     MITHRIL_ORE("ThermalFoundation:Ore", 6),
     ARDITE_ORE(new BlockDescDetail(TinkerWorld.oreSlag, 2)),
     COBALT_ORE(new BlockDescDetail(TinkerWorld.oreSlag, 1)),
+    ZINC_ORE("Metallurgy:precious.ore"),
+    MANGANESE_ORE("Metallurgy:base.ore", 2),
 
     NETHER_QUARTZ_ORE("minecraft:quartz_ore"),
     DIAMOND_ORE("minecraft:diamond_ore"),

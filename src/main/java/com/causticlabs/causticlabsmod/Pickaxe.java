@@ -48,13 +48,10 @@ public class Pickaxe {
       // Pickaxe Head Recipes
 
       GameRegistry.addRecipe(ItemHelper.ShapedRecipe(
-         PatternBuilder.instance.getToolPart(
-            ItemHelper.stack(Items.flint),
-            TConstructRegistry.getItemStack("pickaxeHeadPattern"), 
-            null)[0],
+         new ItemStack(TinkerTools.pickaxeHead, 1, Material.Flint.id()),
          "## ", " ##", "  #",
          '#', "itemFlint"));
-      
+/*
       GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
          PatternBuilder.instance.getToolPart(
             ItemHelper.stack(Blocks.stone),
@@ -78,7 +75,7 @@ public class Pickaxe {
          new Object[][] {{"blockObsidian", "blockObsidian", null           }, 
                          {null           , "blockObsidian", "blockObsidian"}, 
                          {null           , null           , "blockObsidian"}}));
-      
+*/
       // Remove all of the casting recipes for the pickaxe head. We'll add our
       // own, with our own values.
       TConstructRegistry.getTableCasting().getCastingRecipes().removeIf(
@@ -101,6 +98,7 @@ public class Pickaxe {
          true, // Do consume the stone pickaxe head.
          4 * 20);
 
+      /*
       Map<Integer, Fluid> pickaxeCastingMaterials = 
          Stream.of(
             // Stone must be chiseled, not cast
@@ -123,5 +121,6 @@ public class Pickaxe {
             false, // Don't consume the cast.
             5 * 20);
       }
+      */
    }
 }

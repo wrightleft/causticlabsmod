@@ -43,25 +43,19 @@ public class Chisel {
       // Chisel Head Recipes
 
       GameRegistry.addRecipe(ItemHelper.ShapedRecipe(
-         PatternBuilder.instance.getToolPart(
-            new ItemStack(Items.flint),
-            TConstructRegistry.getItemStack("chiselHeadPattern"), 
-            null)[0],
+         new ItemStack(TinkerTools.chiselHead, 1, Material.Flint.id()),
          "###", " # ", " # ",
          '#', "itemFlint"));
       
       GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
-         PatternBuilder.instance.getToolPart(
-            new ItemStack(Blocks.stone),
-            TConstructRegistry.getItemStack("chiselHeadPattern"), 
-            null)[0], 
+         new ItemStack(TinkerTools.chiselHead, 1, Material.Flint.id()),
          10 * 5, 
          TinkerTools.chisel,
-         HarvestLevel.FLINT,
+         Material.Flint.level(),
          new Object[][] {{"stone", "stone", "stone" }, 
                          {null   , "stone", null    }, 
                          {null   , "stone", null    }}));
-      
+/*      
       GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
          PatternBuilder.instance.getToolPart(
             new ItemStack(Blocks.obsidian),
@@ -73,7 +67,7 @@ public class Chisel {
          new Object[][] {{"blockObsidian", "blockObsidian", "blockObsidian" }, 
                          {null           , "blockObsidian", null            }, 
                          {null           , "blockObsidian", null            }}));
-      
+*/
       // Remove all of the casting recipes for the chisel head. We'll add our
       // own, with our own values.
       TConstructRegistry.getTableCasting().getCastingRecipes().removeIf(
@@ -96,6 +90,7 @@ public class Chisel {
          true, // Do consume the stone chisel head.
          4 * 20);
 
+      /*
       Map<Integer, Fluid> chiselCastingMaterials = 
          Stream.of(
             // Stone must be chiseled, not cast.
@@ -118,5 +113,6 @@ public class Chisel {
             false, // Don't consume the cast.
             5 * 20);
       }
+      */
    }
 }
