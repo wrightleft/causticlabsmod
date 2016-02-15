@@ -1,4 +1,4 @@
-package com.causticlabs.causticlabsmod;
+package com.causticlabs.causticlabsmod.tools;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
@@ -7,6 +7,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.logging.log4j.Logger;
+
+import com.causticlabs.causticlabsmod.CausticLabsMod;
+import com.causticlabs.causticlabsmod.HarvestLevel;
+import com.causticlabs.causticlabsmod.ShapedTConToolRecipe;
 
 import cofh.lib.util.helpers.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -48,7 +52,7 @@ public class Pickaxe {
       // Pickaxe Head Recipes
 
       GameRegistry.addRecipe(ItemHelper.ShapedRecipe(
-         new ItemStack(TinkerTools.pickaxeHead, 1, Material.Flint.id()),
+         new ItemStack(TinkerTools.pickaxeHead, 1, HarvestLevel.FLINT.id()),
          "## ", " ##", "  #",
          '#', "itemFlint"));
 /*

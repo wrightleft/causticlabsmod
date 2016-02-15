@@ -1,4 +1,4 @@
-package com.causticlabs.causticlabsmod;
+package com.causticlabs.causticlabsmod.tools;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
@@ -7,6 +7,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.logging.log4j.Logger;
+
+import com.causticlabs.causticlabsmod.CausticLabsMod;
+import com.causticlabs.causticlabsmod.HarvestLevel;
+import com.causticlabs.causticlabsmod.ShapedTConToolRecipe;
+import com.causticlabs.causticlabsmod.ShapedUseTConToolRecipe;
 
 import cofh.lib.util.helpers.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -43,15 +48,15 @@ public class Chisel {
       // Chisel Head Recipes
 
       GameRegistry.addRecipe(ItemHelper.ShapedRecipe(
-         new ItemStack(TinkerTools.chiselHead, 1, Material.Flint.id()),
+         new ItemStack(TinkerTools.chiselHead, 1, HarvestLevel.FLINT.id()),
          "###", " # ", " # ",
          '#', "itemFlint"));
       
       GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
-         new ItemStack(TinkerTools.chiselHead, 1, Material.Flint.id()),
+         new ItemStack(TinkerTools.chiselHead, 1, HarvestLevel.FLINT.id()),
          10 * 5, 
          TinkerTools.chisel,
-         Material.Flint.level(),
+         HarvestLevel.FLINT.level(),
          new Object[][] {{"stone", "stone", "stone" }, 
                          {null   , "stone", null    }, 
                          {null   , "stone", null    }}));
