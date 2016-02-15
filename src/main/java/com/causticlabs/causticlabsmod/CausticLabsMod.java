@@ -2,6 +2,10 @@ package com.causticlabs.causticlabsmod;
 
 import org.apache.logging.log4j.Logger;
 
+import com.causticlabs.causticlabsmod.tools.Chisel;
+import com.causticlabs.causticlabsmod.tools.Hatchet;
+import com.causticlabs.causticlabsmod.tools.Pickaxe;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -73,7 +77,7 @@ public class CausticLabsMod {
       TConstructRegistry.getTableCasting().getCastingRecipes().removeIf(
          recipe -> recipe.output.getItem() == TinkerSmeltery.metalPattern);
       
-      Material.apply(logger);
+      HarvestLevel.apply(logger);
       //HarvestLevel.apply(logger);
       Steel.apply(logger);
       Pickaxe.apply(logger);
@@ -180,11 +184,11 @@ public class CausticLabsMod {
 
       GameRegistry.addRecipe(
          new ShapelessUseTConToolRecipe(new ItemStack(Items.stick, 2), 10, 
-            Material.Flint.level(), "plankWood", TinkerTools.hatchet));
+            HarvestLevel.FLINT.level(), "plankWood", TinkerTools.hatchet));
 
       GameRegistry.addRecipe(
          new ShapelessUseTConToolRecipe(new ItemStack(TinkerTools.crossbar, 1), 10, 
-            Material.Flint.level(), "stickWood", TinkerTools.hatchet));
+            HarvestLevel.FLINT.level(), "stickWood", TinkerTools.hatchet));
       
       
       

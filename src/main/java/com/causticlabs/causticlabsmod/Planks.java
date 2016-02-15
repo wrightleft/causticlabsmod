@@ -15,16 +15,16 @@ public class Planks {
       // that we can't turn a log into planks with our bare hands, we need a tool.
 
       GameRegistry.addRecipe(new ShapelessUseTConToolRecipe(new ItemStack(Blocks.planks, 1, 0), 20,
-         Material.Flint.level(), new ItemStack(Blocks.log, 1, 0), TinkerTools.hatchet));
+         HarvestLevel.FLINT.level(), new ItemStack(Blocks.log, 1, 0), TinkerTools.hatchet));
       GameRegistry.addRecipe(new ShapelessUseTConToolRecipe(new ItemStack(Blocks.planks, 1, 1), 20,
-         Material.Flint.level(), new ItemStack(Blocks.log, 1, 1), TinkerTools.hatchet));
+         HarvestLevel.FLINT.level(), new ItemStack(Blocks.log, 1, 1), TinkerTools.hatchet));
       GameRegistry.addRecipe(new ShapelessUseTConToolRecipe(new ItemStack(Blocks.planks, 1, 2), 20,
-         Material.Flint.level(), new ItemStack(Blocks.log, 1, 2), TinkerTools.hatchet));
+         HarvestLevel.FLINT.level(), new ItemStack(Blocks.log, 1, 2), TinkerTools.hatchet));
       GameRegistry.addRecipe(new ShapelessUseTConToolRecipe(new ItemStack(Blocks.planks, 1, 3), 20,
-         Material.Flint.level(), new ItemStack(Blocks.log, 1, 3), TinkerTools.hatchet));
+         HarvestLevel.FLINT.level(), new ItemStack(Blocks.log, 1, 3), TinkerTools.hatchet));
       GameRegistry.addRecipe(new ShapelessUseTConToolRecipe(new ItemStack(Blocks.planks, 1, 4), 20,
-         Material.Flint.level(), new ItemStack(Blocks.log2, 1, 0), TinkerTools.hatchet));
+         HarvestLevel.FLINT.level(), new ItemStack(Blocks.log2, 1, 0), TinkerTools.hatchet));
       GameRegistry.addRecipe(new ShapelessUseTConToolRecipe(new ItemStack(Blocks.planks, 1, 5), 20,
-         Material.Flint.level(), new ItemStack(Blocks.log2, 1, 1), TinkerTools.hatchet));
+         HarvestLevel.FLINT.level(), new ItemStack(Blocks.log2, 1, 1), TinkerTools.hatchet));
    }
 }

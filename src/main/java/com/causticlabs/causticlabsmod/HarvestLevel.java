@@ -1,157 +1,221 @@
 package com.causticlabs.causticlabsmod;
 
-import java.util.AbstractMap.SimpleEntry;
+import static net.minecraft.util.EnumChatFormatting.*;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.logging.log4j.Logger;
 
-import net.minecraftforge.common.ForgeHooks;
+import cofh.lib.util.BlockWrapper;
+import cpw.mods.fml.common.registry.GameData;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import tconstruct.library.TConstructRegistry;
 import tconstruct.library.tools.ToolMaterial;
 import tconstruct.library.util.HarvestLevels;
 
-public enum HarvestLevel {
-    HAND(0, "Hand", Stream.of(
-        new SimpleEntry<>("pickaxe", Stream.of(
-            BlockDesc.GLOWSTONE).collect(Collectors.toList())),
-        new SimpleEntry<>("shovel", Stream.of(
-            BlockDesc.DIRT).collect(Collectors.toList()))).collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue()))),
-    FLINT(1, "Flint", Stream.of(
-        new SimpleEntry<>("pickaxe", Stream.of(
-            BlockDesc.COAL_ORE,
-            BlockDesc.STONE).collect(Collectors.toList())),
-        new SimpleEntry<>("shovel", Stream.of(
-            BlockDesc.SAND).collect(Collectors.toList())),
-        new SimpleEntry<>("axe", Stream.of(
-            BlockDesc.WOOD).collect(Collectors.toList()))).collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue()))),
-    STONE(2, "Stone", Stream.of(
-        new SimpleEntry<>("pickaxe", Stream.of(
-            BlockDesc.COPPER_ORE).collect(Collectors.toList()))).collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue()))),
-    COPPER(3, "Copper", Stream.of(
-       new SimpleEntry<>("pickaxe", Stream.of(
-           BlockDesc.ZINC_ORE).collect(Collectors.toList()))).collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue()))),
-    BRASS(4, "Brass", Stream.of(
-       new SimpleEntry<>("pickaxe", Stream.of(
-           BlockDesc.TIN_ORE).collect(Collectors.toList()))).collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue()))),
-    BRONZE(5, "Bronze", Stream.of(
-        new SimpleEntry<>("pickaxe", Stream.of(
-            BlockDesc.IRON_ORE).collect(Collectors.toList()))).collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue()))),
-    IRON(6, "Iron", Stream.of(
-        new SimpleEntry<>("pickaxe", Stream.of(
-            BlockDesc.ALUMINUM_ORE).collect(Collectors.toList()))).collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue()))),
-    ALUMITE(7, "Alumite", Stream.of(
-       new SimpleEntry<>("pickaxe", Stream.of(
-           BlockDesc.NICKEL_ORE).collect(Collectors.toList()))).collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue()))),
-    INVAR(8, "Invar", Stream.of(
-        new SimpleEntry<>("pickaxe", Stream.of(
-            BlockDesc.MANGANESE_ORE).collect(Collectors.toList()))).collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue()))),
-    STEEL(9, "Steel", Stream.of(
-        new SimpleEntry<>("pickaxe", Stream.of(
-            BlockDesc.OBSIDIAN).collect(Collectors.toList()))).collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue()))),
-    OBSIDIAN(10, "Obsidian", new HashMap<String, List<BlockDesc>>()),
-    SHADOW_STEEL(11, "Shadow Steel", new HashMap<String, List<BlockDesc>>()),
-    VYROXERES(12, "Vyroxeres", new HashMap<String, List<BlockDesc>>()),
-    KALENDRITE(13, "Kalendrite", new HashMap<String, List<BlockDesc>>()),
-    ARDITE(14, "Ardite", new HashMap<String, List<BlockDesc>>()),
-    COBALT(15, "Cobalt", new HashMap<String, List<BlockDesc>>()),
-    VULCANITE(16, "Vulcanite", new HashMap<String, List<BlockDesc>>()),
-    SANGUINITE(17, "Sanguinite", new HashMap<String, List<BlockDesc>>());
+/**
+ * These materials need to be defined in successive harvest levels.
+ * Material names need to correspond to Tinkers' Construct materials if they
+ * are going to be used as a material for tools, etc.
+ * 
+ * TODO - Tweak the durability and speed of the materials to make sense. To
+ *        begin with, they were just copied from what Tinkers' Construct used.
+ */
+public enum HarvestLevel {   
+   HAND("Hand",
+      ToolClass.SHOVEL, BlockDesc.DIRT, Blocks.sand, Blocks.glowstone),
+   FLINT("Flint", 171, 525, 2, 0.7F, 0, 0.0F, DARK_GRAY.toString(), 0x484848,
+      ToolClass.PICKAXE, Blocks.coal_ore, BlockDesc.STONE, 
+      ToolClass.AXE, BlockDesc.WOOD),
+   STONE("Stone", 131, 400, 1, 0.5F, 0, 1.0F, GRAY.toString(), 0x7F7F7F,
+      ToolClass.PICKAXE, BlockDesc.COPPER_ORE);
+      
+   private final String _name;
+   private final int _id;
+   private final ToolMaterial _material; 
+   private Map<ToolClass, List<BlockWrapper>> _blocks;
+   
+   private HarvestLevel(
+      String name,
+      ToolClass toolClass,
+      Object... blocks) {
+      _name = name;
+      _id = -1;
+      _material = null;
+      
+      initializeBlocks(toolClass, blocks);
+   }
+   
+   private HarvestLevel(
+      String name,
+      int durability, 
+      int speed, 
+      int attack, 
+      float handleModifier, 
+      int reinforced, 
+      float stonebound, 
+      String style, 
+      int primaryColor,
+      ToolClass toolClass,
+      Object... blocks) {
 
-    public final int level;
-    private final String name;
-    private final Map<String, List<BlockDesc>> map;
+      _name = name;
+      _id = getMaterialId(name);
+      _material = new ToolMaterial(
+         name,
+         ordinal(),
+         durability,
+         speed,
+         attack,
+         handleModifier,
+         reinforced,
+         stonebound,
+         style,
+         primaryColor);      
 
-    HarvestLevel(
-            int level,
-            String name,
-            Map<String, List<BlockDesc>> map) {
-        this.level = level;
-        this.name = name;
-        this.map = map;
-    }
-    
-    private static int getMaterialId(String name) {
-       for (Entry<Integer, ToolMaterial> entry : TConstructRegistry.toolMaterials.entrySet()) {
-          if (entry.getValue().materialName == name) {
-             return entry.getKey();
-          }
-       }
-       
-       throw new RuntimeException("invalid tool material");
-    }
+      initializeBlocks(toolClass, blocks);
+   }
+   
+   /**
+    * This function will take a bunch of tool classes and blocks and create
+    * a map out of them. It is basically iterating over the objects passed in
+    * looking for tool classes and things that aren't tool classes. Anything 
+    * that isn't a tool class will be used as a block and assigned to the last
+    * tool class seen.
+    * 
+    * @param toolClass
+    * @param objs
+    */
+   private void initializeBlocks(ToolClass toolClass, Object... objs) {
+      // We need to start off by making the block map.
+      _blocks = new HashMap<ToolClass, List<BlockWrapper>>();
 
-    public static void apply(Logger logger) {
-        // A few vanilla harvest levels get overridden in the static
-        // initialization of this class. Best to get it out of the way first.
-        new ForgeHooks();
-
-        for (HarvestLevel harvestLevel : HarvestLevel.values()) {
-            // Set harvest level names. These really can only be set in
-            // TConstruct's map of names. TConstruct will use them, and WAILA.
-            HarvestLevels.harvestLevelNames.put(harvestLevel.level, harvestLevel.name);
-
-            // For some reason the TCon materials are pretty much unmodifiable. Therefore,
-            // we need to create new materials. Oh, and there is no way to remove a tool
-            // material, so we'll also need to do an end run around the normal way of
-            // adding a material, and add it manually. Make sure this corresponds with
-            // TConstructRegistry.addToolMaterial() roughly.            
-            ToolMaterial oldMaterial = TConstructRegistry.getMaterial(harvestLevel.name);
-            
-            if (oldMaterial != null) {
-               ToolMaterial toolMaterial = new ToolMaterial(
-                  oldMaterial.materialName, 
-                  oldMaterial.localizationString, 
-                  harvestLevel.level, 
-                  oldMaterial.durability, 
-                  oldMaterial.miningspeed, 
-                  oldMaterial.attack, 
-                  oldMaterial.handleModifier, 
-                  oldMaterial.reinforced, 
-                  oldMaterial.stonebound, 
-                  oldMaterial.tipStyle, 
-                  oldMaterial.primaryColor);
-               
-               TConstructRegistry.toolMaterials.put(getMaterialId(harvestLevel.name), toolMaterial);
-               TConstructRegistry.toolMaterialStrings.put(harvestLevel.name, toolMaterial);
+      // Then starting iterating over the objects passed in.
+      for (Object obj : objs) {
+         if (obj instanceof ToolClass) {
+            // The object is a tool class, so we must need to switch to a new
+            // tool class. This doesn't require us to do anything special, just
+            // set the tool class variable. The heavy lifting is done on the
+            // other side of the conditional.
+            toolClass = (ToolClass)obj;
+         } else {
+            // Get the list of blocks for this tool class. This also has the
+            // side effect of creating that list if it needs to, which is the
+            // case the first time the tool class is seen.
+            List<BlockWrapper> existingBlocks = _blocks.get(toolClass);
+            if (existingBlocks == null) {
+               existingBlocks = new ArrayList<BlockWrapper>();
+               _blocks.put(toolClass, existingBlocks);
             }
+            
+            // There are several different ways to specify a block. You can
+            // pass in an actual Block reference, if you don't care about
+            // meta-data. This will have the effect of applying the harvest
+            // level to all of the meta-data for that block. You can also pass
+            // in a BlockWrapper, which just associates a Block with some
+            // meta-data.
+            //
+            // You can also specify BlockDesc, which are a more meta way to 
+            // describe blocks. They can potentially be a list, or group, of
+            // blocks.
+            //
+            // In addition, to support other mods, where we can't get access to 
+            // the blocks directly, you can specify a string which will be used
+            // to search the block registry. For example, 
+            // "ThermalFoundation:Ore:1", which will translate to the copper ore
+            // block.
+            if (obj instanceof BlockDesc) {
+               for (BlockWrapper blockWrapper : (BlockDesc)obj) {
+                  existingBlocks.add(blockWrapper);  
+               }
+            } else {
+               existingBlocks.add(Utils.getBlockWrapper(obj));
+            }
+         }
+      }
+   }
 
-            for (Entry<String, List<BlockDesc>> entry : harvestLevel.map.entrySet()) {
-               for (BlockDesc blockDesc : entry.getValue()) {
-                  for (BlockDescDetail blockDescDetail : blockDesc) {
-                     // Setting the harvest level needs to done differently depending on
-                     // if we care about meta-data or not. If we do it without meta-data
-                     // then it will apply to all of the meta-data values.
-                     if (blockDescDetail.meta >= 0) {
-                         blockDescDetail.block.setHarvestLevel(
-                             entry.getKey(),
-                             harvestLevel.level,
-                             blockDescDetail.meta);
-                         logger.info(
-                             String.format(
-                                 "Set %s:%d to harvest level %s (%d)",
-                                 blockDescDetail.block.getUnlocalizedName(),
-                                 blockDescDetail.meta,
-                                 harvestLevel.name,
-                                 harvestLevel.level));
-                     } else {
-                         blockDescDetail.block.setHarvestLevel(
-                             entry.getKey(),
-                             harvestLevel.level);
-                         logger.info(
-                             String.format(
-                                 "Set %s:* to harvest level %s (%d)",
-                                 blockDescDetail.block.getUnlocalizedName(),
-                                 harvestLevel.name,
-                                 harvestLevel.level));
-                     }
-                 }
-              }
+   private int getMaterialId(String name) {
+      for (Entry<Integer, ToolMaterial> entry : TConstructRegistry.toolMaterials.entrySet()) {
+         if (entry.getValue().materialName == name) {
+            return entry.getKey();
+         }
+      }
+      
+      throw new RuntimeException("invalid tool material");
+   }
+   
+   public int id() {
+      return _id;
+   }
+   
+   public int level() {
+      return ordinal();
+   }
+
+   @Override
+   public String toString() {
+      return _name;
+   }
+   
+   
+   /**
+    * Applying means that the material properties defined in this enumeration
+    * are made effective in the game. This includes:
+    * -  Setting harvest level names.
+    * -  Setting the harvest level and tool classes of all of the blocks.
+    * -  Setting materials and material names for Tinker's Construct.
+    * 
+    * @param logger
+    */
+   public static void apply(Logger logger) {
+      
+      for (HarvestLevel material : HarvestLevel.values()) {
+
+         if (material._material != null) {
+            HarvestLevels.harvestLevelNames.put(
+               material._material.harvestLevel, 
+               material._material.materialName);
+   
+            TConstructRegistry.toolMaterials.put(material._id, material._material);
+            TConstructRegistry.toolMaterialStrings.put(material._material.materialName, material._material);
+         }
+         
+         for (Entry<ToolClass, List<BlockWrapper>> entry : material._blocks.entrySet()) {
+            for (BlockWrapper block : entry.getValue()) {
+               // Setting the harvest level needs to done differently depending on
+               // if we care about meta-data or not. If we do it without meta-data
+               // then it will apply to all of the meta-data values.
+               if (block.metadata >= 0) {
+                  block.block.setHarvestLevel(
+                     entry.getKey().toString(),
+                     material.level(),
+                     block.metadata);
+                 logger.info(
+                    String.format(
+                       "Set %s:%d to harvest level %s (%d)",
+                       block.block.getUnlocalizedName(),
+                       block.metadata,
+                       material.toString(),
+                       material.level()));
+               } else {
+                  block.block.setHarvestLevel(
+                       entry.getKey().toString(),
+                       material.level());
+                  logger.info(
+                     String.format(
+                        "Set %s to harvest level %s (%d)",
+                        block.block.getUnlocalizedName(),
+                        material.toString(),
+                        material.level()));
+               }
            }
         }
-    }
+      }
+   }
 }
