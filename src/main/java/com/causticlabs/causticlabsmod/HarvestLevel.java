@@ -33,7 +33,9 @@ public enum HarvestLevel {
       ToolClass.PICKAXE, Blocks.coal_ore, BlockDesc.STONE, 
       ToolClass.AXE, BlockDesc.WOOD),
    STONE("Stone", 131, 400, 1, 0.5F, 0, 1.0F, GRAY.toString(), 0x7F7F7F,
-      ToolClass.PICKAXE, BlockDesc.COPPER_ORE);
+      ToolClass.PICKAXE, BlockDesc.COPPER_ORE),
+   COPPER("Copper", 180, 500, 2, 1.15F, 0, 0.0F, RED.toString(), 0xCC6410,
+      ToolClass.PICKAXE, BlockDesc.ZINC_ORE);
       
    private final String _name;
    private final int _id;
