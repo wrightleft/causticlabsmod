@@ -61,7 +61,19 @@ public enum BlockDesc implements Iterable<BlockWrapper>{
 
    BlockDesc(Object... objs) {
       _blocks = new ArrayList<BlockWrapper>();
-       
+      
+      // There are several different ways to specify a block. You can
+      // pass in an actual Block reference, if you don't care about
+      // meta-data. This will have the effect of applying the harvest
+      // level to all of the meta-data for that block. You can also pass
+      // in a BlockWrapper, which just associates a Block with some
+      // meta-data.
+      //
+      // In addition, to support other mods, where we can't get access to 
+      // the blocks directly, you can specify a string which will be used
+      // to search the block registry. For example, 
+      // "ThermalFoundation:Ore:1", which will translate to the copper ore
+      // block.
       for (Object obj : objs) {
          _blocks.add(Utils.getBlockWrapper(obj));
       }

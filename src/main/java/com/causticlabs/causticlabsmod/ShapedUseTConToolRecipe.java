@@ -9,9 +9,11 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
 import tconstruct.library.tools.ToolCore;
 
-// This class provides a recipe that uses the TCon tool and some ingredients.
-// The ingredients are shaped, but the tool can be anywhere. You'll have to
-// leave a null in the recipe for the tool to fit somewhere.
+/**
+ * This class provides a recipe that uses a TCon tool and some ingredients.
+ * The ingredients are shaped, but the tool can be anywhere. You'll have to
+ * leave an empty spot (null) in the recipe for the tool to fit somewhere.
+ */
 public class ShapedUseTConToolRecipe extends UseTConToolRecipe {
 
    static {
@@ -28,7 +30,7 @@ public class ShapedUseTConToolRecipe extends UseTConToolRecipe {
          ItemStack result, 
          int damage, 
          ToolCore tool, 
-         int neededHarvestLevel, 
+         HarvestLevel neededHarvestLevel, 
          Object[][] recipe) {
       super(result, damage, neededHarvestLevel);
       

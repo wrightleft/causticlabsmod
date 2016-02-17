@@ -43,6 +43,7 @@ public class CausticLabsMod {
    public static ItemStack anyCrossbar;
    public static ItemStack anyBowLimb;
    public static ItemStack anyChiselHead;
+   public static ItemStack anyHammerHead;
    
    @Mod.EventHandler
    public void onEvent(FMLPreInitializationEvent event) { 
@@ -55,6 +56,7 @@ public class CausticLabsMod {
       anyCrossbar = new ItemStack(TinkerTools.crossbar, 1, OreDictionary.WILDCARD_VALUE);
       anyBowLimb = new ItemStack(TinkerWeaponry.partBowLimb, 1, OreDictionary.WILDCARD_VALUE);
       anyChiselHead = new ItemStack(TinkerTools.chiselHead, 1, OreDictionary.WILDCARD_VALUE);
+      anyHammerHead = new ItemStack(TinkerTools.hammerHead, 1, OreDictionary.WILDCARD_VALUE);
    }
 
    @Mod.EventHandler
@@ -120,7 +122,9 @@ public class CausticLabsMod {
       // Most of these tools have multiple recipes to make things easier. Such as a slanted
       // one and a up and down one. Nearly all of the Shaped recipes are also mirrored for
       // convenience. 
-
+      
+      // TODO - Move these to their own classes.
+/*
       // Shovel
       GameRegistry.addRecipe(new ShapedTConToolRecipe(
             anyShovelHead, 
@@ -177,18 +181,18 @@ public class CausticLabsMod {
             "materialRod",
             new Object[][] {{null         , anyKnifeBlade},
                             {"materialRod", null         }}));
-
+*/
       // Add recipes that use TCon tools in a way that damages them. This makes
       // a lot of sense, but is strangely not straight forward. The idea here is
       // that we can't turn a log into planks with our bare hands, we need a tool.
 
       GameRegistry.addRecipe(
          new ShapelessUseTConToolRecipe(new ItemStack(Items.stick, 2), 10, 
-            HarvestLevel.FLINT.level(), "plankWood", TinkerTools.hatchet));
+            HarvestLevel.FLINT, "plankWood", TinkerTools.hatchet));
 
       GameRegistry.addRecipe(
          new ShapelessUseTConToolRecipe(new ItemStack(TinkerTools.crossbar, 1), 10, 
-            HarvestLevel.FLINT.level(), "stickWood", TinkerTools.hatchet));
+            HarvestLevel.FLINT, "stickWood", TinkerTools.hatchet));
       
       
       
