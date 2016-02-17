@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import com.causticlabs.causticlabsmod.CausticLabsMod;
 import com.causticlabs.causticlabsmod.HarvestLevel;
 import com.causticlabs.causticlabsmod.ShapedTConToolRecipe;
+import com.causticlabs.causticlabsmod.ShapedTConToolRecipe.*;
 
 import cofh.lib.util.helpers.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -22,15 +23,11 @@ public class Hatchet {
       ItemStack anyHatchetHead = CausticLabsMod.anyHatchetHead;
       
       GameRegistry.addRecipe(new ShapedTConToolRecipe(
-         anyHatchetHead, 
-         "materialRod", 
-         new Object[][] {{anyHatchetHead},
-                         {"materialRod" }}));
+         new TConToolPart[][] {{new Head(anyHatchetHead) },
+                               {new Handle("materialRod")}}));
       GameRegistry.addRecipe(new ShapedTConToolRecipe(
-         anyHatchetHead, 
-         "materialRod", 
-         new Object[][] {{null         , anyHatchetHead},
-                         {"materialRod", null          }}));
+         new TConToolPart[][] {{null                     , new Head(anyHatchetHead)},
+                               {new Handle("materialRod"), null                    }}));
 
       // Hatchet Head Recipes
       

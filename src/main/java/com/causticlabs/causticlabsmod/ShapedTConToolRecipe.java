@@ -11,12 +11,31 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
 import tconstruct.library.crafting.ToolBuilder;
 
+/**
+ * This class provides a shaped recipe to create TConTools without the goofball 
+ * crafting tables provided in Tinkers' Construct.
+ * 
+ * The recipe must include the same parts that TCon uses. Use the nested classes
+ * to decorate the recipe items.
+ */
 public class ShapedTConToolRecipe implements IRecipe {
 
    static {
       RecipeSorter.register(CausticLabsMod.MODID + ":ShapedTConToolRecipe", ShapedTConToolRecipe.class,
             RecipeSorter.Category.SHAPED, "");
    }
+   
+   public static class TConToolPart {
+      public Object obj;
+      public TConToolPart(Object obj) {
+         this.obj = obj;
+      }
+   }
+   
+   public static class Head extends TConToolPart { public Head(Object obj) { super(obj); } }
+   public static class Handle extends TConToolPart { public Handle(Object obj) { super(obj); } }
+   public static class Accessory extends TConToolPart { public Accessory(Object obj) { super(obj); } }
+   public static class Extra extends TConToolPart { public Extra(Object obj) { super(obj); } }
 
    private Object head = null;
    private Object handle = null;
@@ -27,43 +46,83 @@ public class ShapedTConToolRecipe implements IRecipe {
    private int height = 0;
    private final List<Object> ingredients = new ArrayList<>();
    
-   private void init(Object[][] recipe) {
+   public ShapedTConToolRecipe(TConToolPart[][] recipe) {
       // The height of the recipe is simply the number of rows.
       height = recipe.length;
 
-      // The rows may be different sizes, as Java doesn't prevent that. So use
+      // The rows may be different sizes, as Java doesn't prevent that. So
       // loop through all of them and find the largest size.
       for (Object[] row : recipe) {
          width = Math.max(width, row.length);
       }
 
-      // Create the list of needed ingredients using the width to help fill in
-      // nulls where needed.
-      for (Object[] row : recipe) {
+      // Now we can iterate over the recipe and make sure it makes sense. A 
+      // TConTool recipe needs at least a head and a handle.
+      //
+      // Optionally, an accessory and an extra part can be provided, in that
+      // order. You can't have an extra part without an accessory. Any other
+      // items in the recipe don't make sense. Duplicates also don't make sense.
+      //
+      // As we find the items we're looking for, we'll save them off so we can
+      // later use them to identify the provided ingredients when creating the
+      // result.
+      //
+      // We also create the list of needed ingredients using the width to help 
+      // fill in nulls where needed. This list will be used for matching the
+      // shape of the provided ingredients.
+      for (TConToolPart[] row : recipe) {
          for (int i = 0; i < this.width; ++i) {
             if (i < row.length) {
-               ingredients.add(Utils.translateIngredient(row[i]));
+               if (row[i] instanceof Head) {
+                  if (head == null) {
+                     head = Utils.translateIngredient(row[i].obj);
+                     ingredients.add(head);
+                  } else {
+                     throw new RuntimeException("multiple heads in TConTool recipe");
+                  }
+               } else if (row[i] instanceof Handle) {
+                  if (handle == null) {
+                     handle = Utils.translateIngredient(row[i].obj);
+                     ingredients.add(handle);
+                  } else {
+                     throw new RuntimeException("multiple handles in TConTool recipe");
+                  }
+               } else if (row[i] instanceof Accessory) {
+                  if (accessory == null) {
+                     accessory = Utils.translateIngredient(row[i].obj);
+                     ingredients.add(accessory);
+                  } else {
+                     throw new RuntimeException("multiple accessories in TConTool recipe");
+                  }
+               } else if (row[i] instanceof Extra) {
+                  if (extra == null) {
+                     extra = Utils.translateIngredient(row[i].obj);
+                     ingredients.add(extra);
+                  } else {
+                     throw new RuntimeException("multiple extras in TConTool recipe");
+                  }
+               } else if (row[i] == null) {
+                  ingredients.add(null);
+               } else {
+                  throw new RuntimeException("invalid part in TConTool recipe");
+               }
             } else {
                ingredients.add(null);
             }
          }
       }
-   }
-   
-   public ShapedTConToolRecipe(Object head, Object handle, Object[][] recipe) {
-      this.head = Utils.translateIngredient(head);
-      this.handle = Utils.translateIngredient(handle);
       
-      init(recipe);
-   }
-
-   public ShapedTConToolRecipe(Object head, Object handle, Object accessory, Object[][] recipe) {
-
-      this.head = Utils.translateIngredient(head);
-      this.handle = Utils.translateIngredient(handle);
-      this.accessory = Utils.translateIngredient(accessory);
+      if (head == null) {
+         throw new RuntimeException("missing head in TConTool recipe");
+      }
       
-      init(recipe);
+      if (handle == null) {
+         throw new RuntimeException("missing handle in TConTool recipe");
+      }
+      
+      if ((extra != null) && (accessory == null)) {
+         throw new RuntimeException("missing accessory when extra provided in TConTool recipe");
+      }
    }
 
    @Override
@@ -147,8 +206,7 @@ public class ShapedTConToolRecipe implements IRecipe {
                }
             } else if (providedIngredient != null) {
                // The recipe didn't need anything in this slot, but there was
-               // something provided that wasn't a tool. That's a no-no; bail
-               // out.
+               // something provided. That's a no-no; bail out.
                return false;
             }
          }

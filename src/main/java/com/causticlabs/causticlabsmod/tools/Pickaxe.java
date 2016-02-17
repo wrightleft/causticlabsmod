@@ -11,6 +11,8 @@ import org.apache.logging.log4j.Logger;
 import com.causticlabs.causticlabsmod.CausticLabsMod;
 import com.causticlabs.causticlabsmod.HarvestLevel;
 import com.causticlabs.causticlabsmod.ShapedTConToolRecipe;
+import com.causticlabs.causticlabsmod.ShapedTConToolRecipe.*;
+import com.causticlabs.causticlabsmod.ShapedUseTConToolRecipe;
 
 import cofh.lib.util.helpers.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -35,39 +37,32 @@ public class Pickaxe {
       ItemStack anyPickaxeHead = CausticLabsMod.anyPickaxeHead;
       
       GameRegistry.addRecipe(new ShapedTConToolRecipe(
-         anyPickaxeHead,
-         "materialRod", 
-         "materialBinding", 
-         new Object[][] {{anyPickaxeHead   },
-                         {"materialBinding"},
-                         {"materialRod"    }}));
+         new TConToolPart[][] {{new Head(anyPickaxeHead)        },
+                               {new Accessory("materialBinding")},
+                               {new Handle("materialRod")       }}));
       GameRegistry.addRecipe(new ShapedTConToolRecipe(
-         anyPickaxeHead,
-         "materialRod", 
-         "materialBinding", 
-         new Object[][] {{null         , null             , anyPickaxeHead   },
-                         {null         , "materialBinding", null             },
-                         {"materialRod", null             , null             }}));
+         new TConToolPart[][] {{null                     , null                            , new Head(anyPickaxeHead)   },
+                               {null                     , new Accessory("materialBinding"), null                       },
+                               {new Handle("materialRod"), null                            , null                       }}));
 
       // Pickaxe Head Recipes
 
       GameRegistry.addRecipe(ItemHelper.ShapedRecipe(
          new ItemStack(TinkerTools.pickaxeHead, 1, HarvestLevel.FLINT.id()),
-         "## ", " ##", "  #",
+         "## ", 
+         " ##", 
+         "  #",
          '#', "itemFlint"));
-/*
+      
       GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
-         PatternBuilder.instance.getToolPart(
-            ItemHelper.stack(Blocks.stone),
-            TConstructRegistry.getItemStack("pickaxeHeadPattern"), 
-            null)[0], 
+         new ItemStack(TinkerTools.pickaxeHead, 1, HarvestLevel.STONE.id()),
          10 * 5, 
          TinkerTools.chisel,
          HarvestLevel.FLINT,
          new Object[][] {{"stone", "stone", null   }, 
                          {null   , "stone", "stone"}, 
                          {null   , null   , "stone"}}));
-
+/*
       GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
          PatternBuilder.instance.getToolPart(
             ItemHelper.stack(Blocks.obsidian),

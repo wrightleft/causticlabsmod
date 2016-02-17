@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import com.causticlabs.causticlabsmod.CausticLabsMod;
 import com.causticlabs.causticlabsmod.HarvestLevel;
 import com.causticlabs.causticlabsmod.ShapedTConToolRecipe;
+import com.causticlabs.causticlabsmod.ShapedTConToolRecipe.*;
 import com.causticlabs.causticlabsmod.ShapedUseTConToolRecipe;
 
 import cofh.lib.util.helpers.ItemHelper;
@@ -35,15 +36,11 @@ public class Chisel {
       ItemStack anyChiselHead = CausticLabsMod.anyChiselHead;
       
       GameRegistry.addRecipe(new ShapedTConToolRecipe(
-            anyChiselHead,
-            "materialRod",
-            new Object[][] {{anyChiselHead},
-                            {"materialRod"}}));
+            new TConToolPart[][] {{new Head(anyChiselHead)  },
+                                  {new Handle("materialRod")}}));
       GameRegistry.addRecipe(new ShapedTConToolRecipe(
-            anyChiselHead,
-            "materialRod",
-            new Object[][] {{null         , anyChiselHead},
-                            {"materialRod", null         }}));
+            new TConToolPart[][] {{null                     , new Head(anyChiselHead)},
+                                  {new Handle("materialRod"), null                   }}));
       
       // Chisel Head Recipes
 
@@ -56,7 +53,7 @@ public class Chisel {
          new ItemStack(TinkerTools.chiselHead, 1, HarvestLevel.FLINT.id()),
          10 * 5, 
          TinkerTools.chisel,
-         HarvestLevel.FLINT.level(),
+         HarvestLevel.FLINT,
          new Object[][] {{"stone", "stone", "stone" }, 
                          {null   , "stone", null    }, 
                          {null   , "stone", null    }}));
