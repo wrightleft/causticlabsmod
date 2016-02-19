@@ -3,9 +3,11 @@ package com.causticlabs.causticlabsmod;
 import org.apache.logging.log4j.Logger;
 
 import com.causticlabs.causticlabsmod.tools.Chisel;
+import com.causticlabs.causticlabsmod.tools.Hammer;
 import com.causticlabs.causticlabsmod.tools.Hatchet;
 import com.causticlabs.causticlabsmod.tools.Pickaxe;
 
+import cofh.lib.util.helpers.ItemHelper;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -21,6 +23,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import tconstruct.library.TConstructRegistry;
 import tconstruct.smeltery.TinkerSmeltery;
 import tconstruct.tools.TinkerTools;
+import tconstruct.tools.TinkerTools.MaterialID;
 import tconstruct.weaponry.TinkerWeaponry;
 
 // There are a few more dependencies, but they have wildcard dependencies of their own which preclude us depending
@@ -44,6 +47,7 @@ public class CausticLabsMod {
    public static ItemStack anyBowLimb;
    public static ItemStack anyChiselHead;
    public static ItemStack anyHammerHead;
+   public static ItemStack anyToughRod;
    
    @Mod.EventHandler
    public void onEvent(FMLPreInitializationEvent event) { 
@@ -57,6 +61,7 @@ public class CausticLabsMod {
       anyBowLimb = new ItemStack(TinkerWeaponry.partBowLimb, 1, OreDictionary.WILDCARD_VALUE);
       anyChiselHead = new ItemStack(TinkerTools.chiselHead, 1, OreDictionary.WILDCARD_VALUE);
       anyHammerHead = new ItemStack(TinkerTools.hammerHead, 1, OreDictionary.WILDCARD_VALUE);
+      anyToughRod = new ItemStack(TinkerTools.toughRod, 1, OreDictionary.WILDCARD_VALUE);
    }
 
    @Mod.EventHandler
@@ -80,10 +85,10 @@ public class CausticLabsMod {
          recipe -> recipe.output.getItem() == TinkerSmeltery.metalPattern);
       
       HarvestLevel.apply(logger);
-      //HarvestLevel.apply(logger);
       Steel.apply(logger);
       Pickaxe.apply(logger);
       Chisel.apply(logger);
+      Hammer.apply(logger);
       Hatchet.apply(logger);
       Planks.apply(logger); 
 
@@ -187,19 +192,25 @@ public class CausticLabsMod {
       // that we can't turn a log into planks with our bare hands, we need a tool.
 
       GameRegistry.addRecipe(
-         new ShapelessUseTConToolRecipe(new ItemStack(Items.stick, 2), 10, 
-            HarvestLevel.FLINT, "plankWood", TinkerTools.hatchet));
+         new ShapelessUseTConToolRecipe(
+            new ItemStack(Items.stick, 2), 
+            Hatchet.Wood_Cost * 1, 
+            HarvestLevel.FLINT, 
+            "plankWood", TinkerTools.hatchet));
 
       GameRegistry.addRecipe(
-         new ShapelessUseTConToolRecipe(new ItemStack(TinkerTools.crossbar, 1), 10, 
-            HarvestLevel.FLINT, "stickWood", TinkerTools.hatchet));
+         new ShapelessUseTConToolRecipe(
+            new ItemStack(TinkerTools.crossbar, 1), 
+            Hatchet.Wood_Cost * 1, 
+            HarvestLevel.FLINT, 
+            "stickWood", TinkerTools.hatchet));
       
-      
-      
-
-      
-      
-      
+      GameRegistry.addRecipe(
+         ItemHelper.ShapedRecipe(
+            new ItemStack(TinkerTools.toughRod, 1, MaterialID.Wood),
+            "  #", 
+            " # ",
+            "#  ",
+            '#', "stickWood"));      
    }
-
 }

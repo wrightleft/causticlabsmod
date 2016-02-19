@@ -3,6 +3,8 @@ package com.causticlabs.causticlabsmod;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.causticlabs.causticlabsmod.ShapedTConToolRecipe.TConToolPart;
+
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -17,6 +19,8 @@ import tconstruct.library.crafting.ToolBuilder;
  * 
  * The recipe must include the same parts that TCon uses. Use the nested classes
  * to decorate the recipe items.
+ * 
+ * The recipe is automatically mirrored.
  */
 public class ShapedTConToolRecipe implements IRecipe {
 
@@ -37,16 +41,38 @@ public class ShapedTConToolRecipe implements IRecipe {
    public static class Accessory extends TConToolPart { public Accessory(Object obj) { super(obj); } }
    public static class Extra extends TConToolPart { public Extra(Object obj) { super(obj); } }
 
-   private Object head = null;
-   private Object handle = null;
-   private Object accessory = null;
-   private Object extra = null;
+   private Object recipeHead = null;
+   private Object recipeHandle = null;
+   private Object recipeAccessory = null;
+   private Object recipeExtra = null;
+   
+   private ItemStack gratisHead = null;
+   private ItemStack gratisHandle = null;
+   private ItemStack gratisAccessory = null;
+   private ItemStack gratisExtra = null;
+      
 
    private int width = 0;
    private int height = 0;
    private final List<Object> ingredients = new ArrayList<>();
    
    public ShapedTConToolRecipe(TConToolPart[][] recipe) {
+      this(recipe, new TConToolPart[]{});
+   }
+
+   /**
+    * @param recipe
+    * @param gratisParts
+    * Extra parts is a way to provide parts for the tool construction that won't
+    * be provided by the crafting table. They are freebies. Of course they still
+    * need to follow the same rules for the other parts and they need to be an
+    * ItemStack, rather that supporting all the stuff that ingredients do.
+    */
+   public ShapedTConToolRecipe(TConToolPart[][] recipe, TConToolPart[] gratisParts) {
+      init(recipe, gratisParts);
+   }
+
+   private void init(TConToolPart[][] recipe, TConToolPart[] gratisParts) {
       // The height of the recipe is simply the number of rows.
       height = recipe.length;
 
@@ -74,32 +100,48 @@ public class ShapedTConToolRecipe implements IRecipe {
          for (int i = 0; i < this.width; ++i) {
             if (i < row.length) {
                if (row[i] instanceof Head) {
-                  if (head == null) {
-                     head = Utils.translateIngredient(row[i].obj);
-                     ingredients.add(head);
+                  if (gratisHead == null) {
+                     if (recipeHead == null) {
+                        recipeHead = Utils.translateIngredient(row[i].obj);
+                        ingredients.add(recipeHead);
+                     } else {
+                        throw new RuntimeException("multiple heads in TConTool recipe");
+                     }
                   } else {
-                     throw new RuntimeException("multiple heads in TConTool recipe");
+                     throw new RuntimeException("gratis head already provided");
                   }
                } else if (row[i] instanceof Handle) {
-                  if (handle == null) {
-                     handle = Utils.translateIngredient(row[i].obj);
-                     ingredients.add(handle);
+                  if (gratisHandle == null) {
+                     if (recipeHandle == null) {
+                        recipeHandle = Utils.translateIngredient(row[i].obj);
+                        ingredients.add(recipeHandle);
+                     } else {
+                        throw new RuntimeException("multiple handles in TConTool recipe");
+                     }
                   } else {
-                     throw new RuntimeException("multiple handles in TConTool recipe");
+                     throw new RuntimeException("gratis handle already provided");
                   }
                } else if (row[i] instanceof Accessory) {
-                  if (accessory == null) {
-                     accessory = Utils.translateIngredient(row[i].obj);
-                     ingredients.add(accessory);
+                  if (gratisAccessory == null) {
+                     if (recipeAccessory == null) {
+                        recipeAccessory = Utils.translateIngredient(row[i].obj);
+                        ingredients.add(recipeAccessory);
+                     } else {
+                        throw new RuntimeException("multiple accessories in TConTool recipe");
+                     }
                   } else {
-                     throw new RuntimeException("multiple accessories in TConTool recipe");
+                     throw new RuntimeException("gratis accessory already provided");
                   }
                } else if (row[i] instanceof Extra) {
-                  if (extra == null) {
-                     extra = Utils.translateIngredient(row[i].obj);
-                     ingredients.add(extra);
+                  if (gratisExtra == null) {
+                     if (recipeExtra == null) {
+                        recipeExtra = Utils.translateIngredient(row[i].obj);
+                        ingredients.add(recipeExtra);
+                     } else {
+                        throw new RuntimeException("multiple extras in TConTool recipe");
+                     }
                   } else {
-                     throw new RuntimeException("multiple extras in TConTool recipe");
+                     throw new RuntimeException("gratis extra already provided");
                   }
                } else if (row[i] == null) {
                   ingredients.add(null);
@@ -111,16 +153,44 @@ public class ShapedTConToolRecipe implements IRecipe {
             }
          }
       }
+
+      // Validate the gratis parts. At this point there should not be any 
+      // duplicates with parts specified in the recipe. Those were already
+      // checked for.
+      //
+      // However, we do need to check that the gratis parts are the correct
+      // type.
+      for (TConToolPart gratisPart : gratisParts) {
+         if (gratisPart.obj instanceof ItemStack) {
+            if (gratisPart instanceof Head) {
+               gratisHead = (ItemStack)gratisPart.obj;
+            } else if (gratisPart instanceof Handle) {
+               gratisHandle = (ItemStack)gratisPart.obj;
+            } else if (gratisPart instanceof Accessory) {
+               gratisAccessory = (ItemStack)gratisPart.obj;
+            } else if (gratisPart instanceof Extra) {
+               gratisExtra = (ItemStack)gratisPart.obj;
+            } else {
+               throw new RuntimeException("invalid gratis part");
+            }
+         } else {
+            throw new RuntimeException("gratis part invalid type");
+         }
+      }
       
-      if (head == null) {
+      // Some last checks to make sure the recipe can actually produce a valid
+      // tool.
+      
+      if ((recipeHead == null) && (gratisHead == null)) {
          throw new RuntimeException("missing head in TConTool recipe");
       }
       
-      if (handle == null) {
+      if ((recipeHandle == null) && (gratisHandle == null)) {
          throw new RuntimeException("missing handle in TConTool recipe");
       }
       
-      if ((extra != null) && (accessory == null)) {
+      if (((recipeExtra != null) || (gratisExtra != null)) && 
+         ((recipeAccessory == null) && (gratisAccessory == null))) {
          throw new RuntimeException("missing accessory when extra provided in TConTool recipe");
       }
    }
@@ -243,25 +313,24 @@ public class ShapedTConToolRecipe implements IRecipe {
       for (int i = 0; i < inventoryCrafting.getSizeInventory(); i++) {
          ItemStack providedIngredient = inventoryCrafting.getStackInSlot(i);
          if (providedIngredient != null) {
-            if ((providedHead == null) && matches(providedIngredient, head)) {
+            if ((providedHead == null) && matches(providedIngredient, recipeHead)) {
                providedHead = providedIngredient;
-            } else if ((providedHandle == null) && matches(providedIngredient, handle)) {
+            } else if ((providedHandle == null) && matches(providedIngredient, recipeHandle)) {
                providedHandle = providedIngredient;
-            } else if ((accessory != null) && (providedAccessory == null) && matches(providedIngredient, accessory)) {
+            } else if ((recipeAccessory != null) && (providedAccessory == null) && matches(providedIngredient, recipeAccessory)) {
                providedAccessory = providedIngredient;
-            } else if ((extra != null) && (providedExtra == null) && matches(providedExtra, extra)) {
+            } else if ((recipeExtra != null) && (providedExtra == null) && matches(providedExtra, recipeExtra)) {
                providedExtra = providedIngredient;
             }
          }
       }
 
-      if (providedExtra != null) {
-         return ToolBuilder.instance.buildTool(providedHead, providedHandle, providedAccessory, providedExtra, null);
-      } else if (providedAccessory != null) {
-         return ToolBuilder.instance.buildTool(providedHead, providedHandle, providedAccessory, null, null);
-      } else {
-         return ToolBuilder.instance.buildTool(providedHead, providedHandle, null, null, null);
-      }
+      return ToolBuilder.instance.buildTool(
+         Utils.coalesce(providedHead, gratisHead), 
+         Utils.coalesce(providedHandle, gratisHandle), 
+         Utils.coalesce(providedAccessory, gratisAccessory), 
+         Utils.coalesce(providedExtra, gratisExtra), 
+         null);
    }
 
    @Override
