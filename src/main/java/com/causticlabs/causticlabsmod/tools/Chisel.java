@@ -29,6 +29,8 @@ import tconstruct.tools.TinkerTools;
 import tconstruct.tools.TinkerTools.MaterialID;
 
 public class Chisel {
+   public static int Stone_Cost = 10;
+   
    public static void apply(Logger logger) {
 
       // Chisel Recipes

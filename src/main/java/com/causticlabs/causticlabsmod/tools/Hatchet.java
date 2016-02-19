@@ -16,6 +16,8 @@ import tconstruct.library.crafting.PatternBuilder;
 import tconstruct.tools.TinkerTools;
 
 public class Hatchet {
+   public static final int Wood_Cost = 10;
+
    public static void apply(Logger logger) {
 
       // Hatchet Recipes

@@ -47,6 +47,9 @@ public class Pickaxe {
 
       // Pickaxe Head Recipes
 
+      // Making a pickaxe head out of flint doesn't require anything special.
+      // It's important to keep it this way, as flint is the beginning harvest
+      // level.
       GameRegistry.addRecipe(ItemHelper.ShapedRecipe(
          new ItemStack(TinkerTools.pickaxeHead, 1, HarvestLevel.FLINT.id()),
          "## ", 
@@ -56,10 +59,9 @@ public class Pickaxe {
       
       GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
          new ItemStack(TinkerTools.pickaxeHead, 1, HarvestLevel.STONE.id()),
-         10 * 5, 
-         TinkerTools.chisel,
-         HarvestLevel.FLINT,
-         new Object[][] {{"stone", "stone", null   }, 
+         Chisel.Stone_Cost * 5, 
+         TinkerTools.chisel, HarvestLevel.FLINT,
+         new Object[][] {{"stone", "stone", null   },  
                          {null   , "stone", "stone"}, 
                          {null   , null   , "stone"}}));
 /*
