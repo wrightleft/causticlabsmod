@@ -59,11 +59,21 @@ public class Pickaxe {
       
       GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
          new ItemStack(TinkerTools.pickaxeHead, 1, HarvestLevel.STONE.id()),
-         Chisel.Stone_Cost * 5, 
+         Chisel.Stone_Damage * 5, 
+         Chisel.Stone_XP * 5,
          TinkerTools.chisel, HarvestLevel.FLINT,
          new Object[][] {{"stone", "stone", null   },  
                          {null   , "stone", "stone"}, 
                          {null   , null   , "stone"}}));
+      
+      GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
+         new ItemStack(TinkerTools.pickaxeHead, 1, HarvestLevel.COPPER.id()),
+         Hammer.Copper_Damage * 5, 
+         Hammer.Copper_XP * 5,
+         TinkerTools.hammer, HarvestLevel.STONE,
+         new Object[][] {{"ingotCopper", "ingotCopper", null         },  
+                         {null         , "ingotCopper", "ingotCopper"}, 
+                         {null         , null         , "ingotCopper"}}));
 /*
       GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
          PatternBuilder.instance.getToolPart(

@@ -21,9 +21,10 @@ public class ShapelessUseTConToolRecipe extends UseTConToolRecipe {
    public ShapelessUseTConToolRecipe(
          ItemStack result, 
          int damage,  
+         int xp,
          HarvestLevel neededHarvestLevel, 
          Object... ingredients) {
-      super(result, damage, neededHarvestLevel);
+      super(result, damage, xp, neededHarvestLevel);
 
       // Build our list of ingredients by converting whatever object we got
       // into an ItemStack or a list of ItemStacks.

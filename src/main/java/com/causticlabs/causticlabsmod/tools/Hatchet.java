@@ -16,7 +16,8 @@ import tconstruct.library.crafting.PatternBuilder;
 import tconstruct.tools.TinkerTools;
 
 public class Hatchet {
-   public static final int Wood_Cost = 10;
+   public static final int Wood_Damage = 10;
+   public static final int Wood_XP = 5;
 
    public static void apply(Logger logger) {
 
@@ -35,7 +36,8 @@ public class Hatchet {
       
       GameRegistry.addRecipe(ItemHelper.ShapedRecipe(
          new ItemStack(TinkerTools.hatchetHead, 1, HarvestLevel.FLINT.id()),
-         "##", "##",
+         "##", 
+         "##",
          '#', "itemFlint"));
    }
 }

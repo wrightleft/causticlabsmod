@@ -29,10 +29,11 @@ public class ShapedUseTConToolRecipe extends UseTConToolRecipe {
    public ShapedUseTConToolRecipe(
          ItemStack result, 
          int damage, 
+         int xp,
          ToolCore tool, 
          HarvestLevel neededHarvestLevel, 
          Object[][] recipe) {
-      super(result, damage, neededHarvestLevel);
+      super(result, damage, xp, neededHarvestLevel);
       
       this.neededTool = tool;
 

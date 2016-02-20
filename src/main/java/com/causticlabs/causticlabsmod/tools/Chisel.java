@@ -29,7 +29,8 @@ import tconstruct.tools.TinkerTools;
 import tconstruct.tools.TinkerTools.MaterialID;
 
 public class Chisel {
-   public static int Stone_Cost = 10;
+   public static final int Stone_Damage = 10;
+   public static final int Stone_XP = 5;
    
    public static void apply(Logger logger) {
 
@@ -53,9 +54,9 @@ public class Chisel {
       
       GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
          new ItemStack(TinkerTools.chiselHead, 1, HarvestLevel.FLINT.id()),
-         10 * 5, 
-         TinkerTools.chisel,
-         HarvestLevel.FLINT,
+         Chisel.Stone_Damage * 5, 
+         Chisel.Stone_XP * 5,
+         TinkerTools.chisel, HarvestLevel.FLINT,
          new Object[][] {{"stone", "stone", "stone" }, 
                          {null   , "stone", null    }, 
                          {null   , "stone", null    }}));

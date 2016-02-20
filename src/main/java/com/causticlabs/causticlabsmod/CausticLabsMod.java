@@ -194,14 +194,16 @@ public class CausticLabsMod {
       GameRegistry.addRecipe(
          new ShapelessUseTConToolRecipe(
             new ItemStack(Items.stick, 2), 
-            Hatchet.Wood_Cost * 1, 
+            Hatchet.Wood_Damage * 1, 
+            Hatchet.Wood_XP * 1,
             HarvestLevel.FLINT, 
             "plankWood", TinkerTools.hatchet));
 
       GameRegistry.addRecipe(
          new ShapelessUseTConToolRecipe(
             new ItemStack(TinkerTools.crossbar, 1), 
-            Hatchet.Wood_Cost * 1, 
+            Hatchet.Wood_Damage * 1, 
+            Hatchet.Wood_XP * 1,
             HarvestLevel.FLINT, 
             "stickWood", TinkerTools.hatchet));
       

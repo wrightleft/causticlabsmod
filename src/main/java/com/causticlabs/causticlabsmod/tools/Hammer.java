@@ -15,6 +15,9 @@ import tconstruct.tools.TinkerTools;
 
 public class Hammer {
 
+   public static final int Copper_Damage = 100;
+   public static final int Copper_XP = 50;
+
    public static void apply(Logger logger) {
 
       // Hammer Recipes
@@ -36,7 +39,8 @@ public class Hammer {
       
       GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
          new ItemStack(TinkerTools.hammerHead, 1, HarvestLevel.STONE.id()),
-         Chisel.Stone_Cost * 8, 
+         Chisel.Stone_Damage * 8, 
+         Chisel.Stone_XP * 8,
          TinkerTools.chisel, HarvestLevel.FLINT,
          new Object[][] {{"stone", "stone", "stone"}, 
                          {"stone", "stone", "stone"}, 
