@@ -17,6 +17,10 @@ public class Hammer {
 
    public static final int Copper_Damage = 100;
    public static final int Copper_XP = 50;
+   public static final int Brass_Damage = 150;
+   public static final int Brass_XP = 100;
+   public static final int Bronze_Damage = 200;
+   public static final int Bronze_XP = 150;
 
    public static void apply(Logger logger) {
 

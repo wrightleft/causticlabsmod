@@ -80,17 +80,19 @@ public class CausticLabsMod {
       
       // This is where you put things that will interact with other mods.
 
-      // Remove all of the casting recipes for casts, and other ones that we want to change.
+      // Remove all of the casting recipes for casts.
       TConstructRegistry.getTableCasting().getCastingRecipes().removeIf(
          recipe -> recipe.output.getItem() == TinkerSmeltery.metalPattern);
       
       HarvestLevel.apply(logger);
-      Steel.apply(logger);
       Pickaxe.apply(logger);
       Chisel.apply(logger);
       Hammer.apply(logger);
       Hatchet.apply(logger);
       Planks.apply(logger); 
+      
+      Alumite.apply(logger);
+      Steel.apply(logger);
 
       // Adding this recipe causes any modification normally done in the tool
       // station or forge to be available in normal crafting station or just

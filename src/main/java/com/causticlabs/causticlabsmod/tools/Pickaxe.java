@@ -74,19 +74,34 @@ public class Pickaxe {
          new Object[][] {{"ingotCopper", "ingotCopper", null         },  
                          {null         , "ingotCopper", "ingotCopper"}, 
                          {null         , null         , "ingotCopper"}}));
-/*
+      
       GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
-         PatternBuilder.instance.getToolPart(
-            ItemHelper.stack(Blocks.obsidian),
-            TConstructRegistry.getItemStack("pickaxeHeadPattern"), 
-            null)[0], 
-         100 * 5, 
-         TinkerTools.chisel,
-         HarvestLevel.STEEL,
+         new ItemStack(TinkerTools.pickaxeHead, 1, HarvestLevel.BRASS.id()),
+         Hammer.Brass_Damage * 5, 
+         Hammer.Brass_XP * 5,
+         TinkerTools.hammer, HarvestLevel.STONE,
+         new Object[][] {{"ingotBrass", "ingotBrass", null        },  
+                         {null        , "ingotBrass", "ingotBrass"}, 
+                         {null        , null        , "ingotBrass"}}));
+      
+      GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
+         new ItemStack(TinkerTools.pickaxeHead, 1, HarvestLevel.BRONZE.id()),
+         Hammer.Bronze_Damage * 5, 
+         Hammer.Bronze_XP * 5,
+         TinkerTools.hammer, HarvestLevel.STONE,
+         new Object[][] {{"ingotBronze", "ingotBronze", null         },  
+                         {null         , "ingotBronze", "ingotBronze"}, 
+                         {null         , null         , "ingotBronze"}}));
+      
+      GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
+         new ItemStack(TinkerTools.pickaxeHead, 1, HarvestLevel.OBSIDIAN.id()), 
+         Chisel.Obisdian_Damage * 5, 
+         Chisel.Obisdian_XP * 5, 
+         TinkerTools.chisel, HarvestLevel.STEEL,
          new Object[][] {{"blockObsidian", "blockObsidian", null           }, 
                          {null           , "blockObsidian", "blockObsidian"}, 
                          {null           , null           , "blockObsidian"}}));
-*/
+
       // Remove all of the casting recipes for the pickaxe head. We'll add our
       // own, with our own values.
       TConstructRegistry.getTableCasting().getCastingRecipes().removeIf(
@@ -96,33 +111,33 @@ public class Pickaxe {
       // casts to stone patterns only.
       //
       // The cost of the cast is the inverse of the cost of casting an item from the
-      // cast. Go figure. The total cost is a blank cast, which is 9.
+      // cast. Go figure. The total cost is a blank cast, which is 8, which is the
+      // cost of a large plate.
       // 
-      // The magic number 20 is the ticks per second. So 4 * 20 is 4 seconds.
+      // The magic number 20 is the ticks per second. So 3 * 20 is about 3 seconds.
+      // The tick rate can fluctuate, but 20 is the goal.
       
       ItemStack pickaxeHeadCast = new ItemStack(TinkerSmeltery.metalPattern, 1, 2);
       
       TConstructRegistry.getTableCasting().addCastingRecipe(
          pickaxeHeadCast, 
-         new FluidStack(TinkerSmeltery.moltenAlubrassFluid, TConstruct.ingotLiquidValue * 4), 
-         ItemHelper.stack(TinkerTools.pickaxeHead, 1, 1), 
+         new FluidStack(TinkerSmeltery.moltenAlubrassFluid, TConstruct.ingotLiquidValue * 3), 
+         ItemHelper.stack(TinkerTools.pickaxeHead, 1, HarvestLevel.STONE.id()), 
          true, // Do consume the stone pickaxe head.
-         4 * 20);
+         3 * 20);
 
-      /*
+      // This a list of all of the materials that can be used to cast a pickaxe 
+      // head. Certain pickaxe heads can also be created by other means, such as
+      // the chisel or hammer, but these are all that use the smeltery.
+      //
+      // Note that there should be no overlap between chisel, hammer, and 
+      // smeltery methods.
       Map<Integer, Fluid> pickaxeCastingMaterials = 
          Stream.of(
-            // Stone must be chiseled, not cast
-            new SimpleEntry<>(MaterialID.Bronze, TinkerSmeltery.moltenBronzeFluid),
-            new SimpleEntry<>(MaterialID.Iron, TinkerSmeltery.moltenIronFluid),
-            new SimpleEntry<>(Utils.getMaterialID("Invar"), TinkerSmeltery.moltenInvarFluid),
-            new SimpleEntry<>(MaterialID.Steel, TinkerSmeltery.moltenSteelFluid),
-            // Obsidian must be chiseled, not cast
-            // Dark Steel (Ender IO)
-            new SimpleEntry<>(MaterialID.Alumite, TinkerSmeltery.moltenAlumiteFluid),
-            new SimpleEntry<>(MaterialID.Ardite, TinkerSmeltery.moltenArditeFluid),
-            new SimpleEntry<>(MaterialID.Cobalt, TinkerSmeltery.moltenCobaltFluid),
-            new SimpleEntry<>(MaterialID.Manyullyn, TinkerSmeltery.moltenManyullynFluid)).collect(
+            new SimpleEntry<>(HarvestLevel.ALUMITE.id(), TinkerSmeltery.moltenAlumiteFluid),
+            new SimpleEntry<>(HarvestLevel.IRON.id(), TinkerSmeltery.moltenIronFluid),
+            new SimpleEntry<>(HarvestLevel.INVAR.id(), TinkerSmeltery.moltenInvarFluid),
+            new SimpleEntry<>(HarvestLevel.STEEL.id(), TinkerSmeltery.moltenSteelFluid)).collect(
                Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue()));
       for (Entry<Integer, Fluid> entry : pickaxeCastingMaterials.entrySet()) {
          TConstructRegistry.getTableCasting().addCastingRecipe(
@@ -132,6 +147,5 @@ public class Pickaxe {
             false, // Don't consume the cast.
             5 * 20);
       }
-      */
    }
 }

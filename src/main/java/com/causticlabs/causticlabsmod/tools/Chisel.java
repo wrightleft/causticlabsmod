@@ -31,6 +31,8 @@ import tconstruct.tools.TinkerTools.MaterialID;
 public class Chisel {
    public static final int Stone_Damage = 10;
    public static final int Stone_XP = 5;
+   public static final int Obisdian_Damage = 100;
+   public static final int Obisdian_XP = 50;
    
    public static void apply(Logger logger) {
 

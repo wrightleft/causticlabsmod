@@ -17,6 +17,7 @@ import net.minecraft.init.Blocks;
 import tconstruct.library.TConstructRegistry;
 import tconstruct.library.tools.ToolMaterial;
 import tconstruct.library.util.HarvestLevels;
+import tconstruct.tools.TinkerTools.MaterialID;
 
 /**
  * These materials need to be defined in successive harvest levels.
@@ -25,17 +26,47 @@ import tconstruct.library.util.HarvestLevels;
  * 
  * TODO - Tweak the durability and speed of the materials to make sense. To
  *        begin with, they were just copied from what Tinkers' Construct used.
+ *        
+ * TODO - The colors are also just copied, and may not be correct:
+ *        - brass
+ *        
+ * TODO - This is only a smattering of all of the blocks that should
+ *        be listed here.
  */
 public enum HarvestLevel {   
-   HAND("Hand",
+   HAND("Hand", 
       ToolClass.SHOVEL, BlockDesc.DIRT, Blocks.sand, Blocks.glowstone),
-   FLINT("Flint", 171, 525, 2, 0.7F, 0, 0.0F, DARK_GRAY.toString(), 0x484848,
+   FLINT("Flint", getMaterialId("Flint"),
+      171, 525, 2, 0.7F, 0, 0.0F, DARK_GRAY.toString(), 0x484848,
       ToolClass.PICKAXE, Blocks.coal_ore, BlockDesc.STONE, 
       ToolClass.AXE, BlockDesc.WOOD),
-   STONE("Stone", 131, 400, 1, 0.5F, 0, 1.0F, GRAY.toString(), 0x7F7F7F,
+   STONE("Stone", getMaterialId("Stone"),
+      131, 400, 1, 0.5F, 0, 1.0F, GRAY.toString(), 0x7F7F7F,
       ToolClass.PICKAXE, BlockDesc.COPPER_ORE),
-   COPPER("Copper", 180, 500, 2, 1.15F, 0, 0.0F, RED.toString(), 0xCC6410,
-      ToolClass.PICKAXE, BlockDesc.ZINC_ORE);
+   COPPER("Copper", getMaterialId("Copper"),
+      180, 500, 2, 1.15F, 0, 0.0F, RED.toString(), 0xCC6410,
+      ToolClass.PICKAXE, BlockDesc.ZINC_ORE),
+   BRASS("Brass", 201, /* New Material */
+      180, 500, 2, 1.15F, 0, 0.0F, RED.toString(), 0xCC6410,
+      ToolClass.PICKAXE, BlockDesc.TIN_ORE),
+   BRONZE("Bronze", getMaterialId("Bronze"),
+      550, 800, 2, 1.3F, 1, 0.0F, GOLD.toString(), 0xCA9956,
+      ToolClass.PICKAXE, BlockDesc.ALUMINUM_ORE),
+   ALUMITE("Alumite", getMaterialId("Alumite"),
+      700, 800, 3, 1.3F, 2, 0F, LIGHT_PURPLE.toString(), 0xFFA7E9,
+      ToolClass.PICKAXE, BlockDesc.IRON_ORE),
+   IRON("Iron", getMaterialId("Iron"),
+      250, 600, 2, 1.3F, 1, 0.0F, WHITE.toString(), 0xDADADA,
+      ToolClass.PICKAXE, BlockDesc.NICKEL_ORE),
+   INVAR("Invar", getMaterialId("Invar"),
+      250, 600, 2, 1.3F, 1, 0.0F, WHITE.toString(), 0xDADADA,
+      ToolClass.PICKAXE, BlockDesc.MANGANESE_ORE),
+   STEEL("Steel", getMaterialId("Steel"),
+      750, 1000, 4, 1.3F, 2, 0.0F, GRAY.toString(), 0xA0A0A0,
+      ToolClass.PICKAXE, BlockDesc.OBSIDIAN),
+   OBSIDIAN("Obsidian", getMaterialId("Obsidian"),
+      89, 700, 2, 0.8F, 3, 0.0F, LIGHT_PURPLE.toString(), 0xAA7FF5,
+      ToolClass.PICKAXE, BlockDesc.SHADOW_IRON);
       
    private final String _name;
    private final int _id;
@@ -47,14 +78,15 @@ public enum HarvestLevel {
       ToolClass toolClass,
       Object... blocks) {
       _name = name;
-      _id = -1;
       _material = null;
+      _id = -1;
       
       initializeBlocks(toolClass, blocks);
    }
    
    private HarvestLevel(
       String name,
+      int materialID,
       int durability, 
       int speed, 
       int attack, 
@@ -67,7 +99,7 @@ public enum HarvestLevel {
       Object... blocks) {
 
       _name = name;
-      _id = getMaterialId(name);
+      _id = materialID;
       _material = new ToolMaterial(
          name,
          ordinal(),
@@ -78,8 +110,14 @@ public enum HarvestLevel {
          reinforced,
          stonebound,
          style,
-         primaryColor);      
-
+         primaryColor);   
+      
+      if (getMaterialId(name) != materialID) {
+         // If we got here, this is a new material, so we need to tell TCon 
+         // about it.
+         TConstructRegistry.addtoolMaterial(materialID, _material);
+      }
+         
       initializeBlocks(toolClass, blocks);
    }
    
@@ -142,14 +180,14 @@ public enum HarvestLevel {
       }
    }
 
-   private int getMaterialId(String name) {
+   static private int getMaterialId(String name) {
       for (Entry<Integer, ToolMaterial> entry : TConstructRegistry.toolMaterials.entrySet()) {
          if (entry.getValue().materialName == name) {
             return entry.getKey();
          }
       }
-      
-      throw new RuntimeException("invalid tool material");
+            
+      return -1;
    }
    
    public int id() {

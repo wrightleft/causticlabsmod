@@ -7,7 +7,11 @@ import cofh.lib.util.helpers.ItemHelper;
 import cpw.mods.fml.common.registry.GameData;
 import net.minecraft.item.ItemStack;
 
-// Steel is only an alloy. It cannot be mined.
+/**
+ * Steel is only an alloy. It cannot be mined.
+ * 
+ * TODO - This is all wrong. Adjust accordingly.
+ */
 public class Steel {
    
    public static void apply(Logger logger) {
