@@ -28,11 +28,11 @@ import tconstruct.smeltery.TinkerSmeltery;
 import tconstruct.tools.TinkerTools;
 import tconstruct.tools.TinkerTools.MaterialID;
 
-public class Chisel {
-   public static final int Stone_Damage = 10;
-   public static final int Stone_XP = 5;
-   public static final int Obisdian_Damage = 100;
-   public static final int Obisdian_XP = 50;
+public class Chisel {   
+   public static final int StoneDamage = 10;
+   public static final int StoneXP = 5;
+   public static final int ObisdianDamage = 100;
+   public static final int ObisdianXP = 50;
    
    public static void apply(Logger logger) {
 
@@ -51,13 +51,15 @@ public class Chisel {
 
       GameRegistry.addRecipe(ItemHelper.ShapedRecipe(
          new ItemStack(TinkerTools.chiselHead, 1, HarvestLevel.FLINT.id()),
-         "###", " # ", " # ",
+         "###", 
+         " # ", 
+         " # ",
          '#', "itemFlint"));
       
       GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
-         new ItemStack(TinkerTools.chiselHead, 1, HarvestLevel.FLINT.id()),
-         Chisel.Stone_Damage * 5, 
-         Chisel.Stone_XP * 5,
+         new ItemStack(TinkerTools.chiselHead, 1, HarvestLevel.STONE.id()),
+         Chisel.StoneDamage * 5, 
+         Chisel.StoneXP * 5,
          TinkerTools.chisel, HarvestLevel.FLINT,
          new Object[][] {{"stone", "stone", "stone" }, 
                          {null   , "stone", null    }, 
@@ -84,7 +86,7 @@ public class Chisel {
       // casts to stone patterns only.
       //
       // The cost of the cast is the inverse of the cost of casting an item from the
-      // cast. Go figure. The total cost is a blank cast, which is 9.
+      // cast. Go figure. The total cost is a blank cast, which is 8.
       // 
       // The magic number 20 is the ticks per second. So 4 * 20 is 4 seconds.
       
@@ -92,25 +94,17 @@ public class Chisel {
       
       TConstructRegistry.getTableCasting().addCastingRecipe(
          chiselHeadCast, 
-         new FluidStack(TinkerSmeltery.moltenAlubrassFluid, TConstruct.ingotLiquidValue * 4), 
+         new FluidStack(TinkerSmeltery.moltenAlubrassFluid, TConstruct.ingotLiquidValue * 3), 
          ItemHelper.stack(TinkerTools.chiselHead, 1, 1), 
          true, // Do consume the stone chisel head.
-         4 * 20);
+         3 * 20);
 
-      /*
       Map<Integer, Fluid> chiselCastingMaterials = 
          Stream.of(
-            // Stone must be chiseled, not cast.
-            new SimpleEntry<>(MaterialID.Bronze, TinkerSmeltery.moltenBronzeFluid),
-            new SimpleEntry<>(MaterialID.Iron, TinkerSmeltery.moltenIronFluid),
-            new SimpleEntry<>(Utils.getMaterialID("Invar"), TinkerSmeltery.moltenInvarFluid),
-            new SimpleEntry<>(MaterialID.Steel, TinkerSmeltery.moltenSteelFluid),
-            // TODO - Obsidian must be chiseled, not cast.
-            // TODO - Dark Steel (Ender IO)
-            new SimpleEntry<>(MaterialID.Alumite, TinkerSmeltery.moltenAlumiteFluid),
-            new SimpleEntry<>(MaterialID.Ardite, TinkerSmeltery.moltenArditeFluid),
-            new SimpleEntry<>(MaterialID.Cobalt, TinkerSmeltery.moltenCobaltFluid),
-            new SimpleEntry<>(MaterialID.Manyullyn, TinkerSmeltery.moltenManyullynFluid)).collect(
+            new SimpleEntry<>(HarvestLevel.ALUMITE.id(), TinkerSmeltery.moltenAlumiteFluid),
+            new SimpleEntry<>(HarvestLevel.IRON.id(), TinkerSmeltery.moltenIronFluid),
+            new SimpleEntry<>(HarvestLevel.INVAR.id(), TinkerSmeltery.moltenInvarFluid),
+            new SimpleEntry<>(HarvestLevel.STEEL.id(), TinkerSmeltery.moltenSteelFluid)).collect(
                Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue()));
       for (Entry<Integer, Fluid> entry : chiselCastingMaterials.entrySet()) {
          TConstructRegistry.getTableCasting().addCastingRecipe(
@@ -120,6 +114,5 @@ public class Chisel {
             false, // Don't consume the cast.
             5 * 20);
       }
-      */
    }
 }

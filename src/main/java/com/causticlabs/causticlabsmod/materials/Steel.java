@@ -1,4 +1,4 @@
-package com.causticlabs.causticlabsmod;
+package com.causticlabs.causticlabsmod.materials;
 
 import org.apache.logging.log4j.Logger;
 

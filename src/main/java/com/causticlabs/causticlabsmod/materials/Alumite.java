@@ -1,8 +1,9 @@
-package com.causticlabs.causticlabsmod;
+package com.causticlabs.causticlabsmod.materials;
 
 import org.apache.logging.log4j.Logger;
 
 import cofh.lib.util.helpers.FluidHelper;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import scala.actors.threadpool.Arrays;
 import tconstruct.TConstruct;
@@ -11,7 +12,7 @@ import tconstruct.library.crafting.Smeltery;
 import tconstruct.smeltery.TinkerSmeltery;
 
 public class Alumite {
-   static void apply(Logger logger) {
+   public static void apply(Logger logger) {
       logger.info("applying alumite customizations");
       
       Smeltery.getAlloyList().removeIf(
@@ -19,11 +20,9 @@ public class Alumite {
             (alloy.result != null) && 
             (FluidHelper.isFluidEqual(TinkerSmeltery.moltenAlumiteFluid, alloy.result)));
       
-      Smeltery.getAlloyList().add(new AlloyMix(
-         new FluidStack(TinkerSmeltery.moltenAlumiteFluid, TConstruct.nuggetLiquidValue * 2),
-         Arrays.asList(new FluidStack[] {
-            new FluidStack(TinkerSmeltery.moltenAluminumFluid, TConstruct.nuggetLiquidValue * 1),
-            new FluidStack(TinkerSmeltery.moltenTinFluid, TConstruct.nuggetLiquidValue * 1)
-         })));
+      Smeltery.addAlloyMixing(
+         new FluidStack(TinkerSmeltery.moltenAlumiteFluid, TConstruct.nuggetLiquidValue * 3),
+         new FluidStack(TinkerSmeltery.moltenAluminumFluid, TConstruct.nuggetLiquidValue * 2),
+         new FluidStack(TinkerSmeltery.moltenTinFluid, TConstruct.nuggetLiquidValue * 1));
    }
 }

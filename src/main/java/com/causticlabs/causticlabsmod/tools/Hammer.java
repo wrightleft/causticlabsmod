@@ -15,12 +15,12 @@ import tconstruct.tools.TinkerTools;
 
 public class Hammer {
 
-   public static final int Copper_Damage = 100;
-   public static final int Copper_XP = 50;
-   public static final int Brass_Damage = 150;
-   public static final int Brass_XP = 100;
-   public static final int Bronze_Damage = 200;
-   public static final int Bronze_XP = 150;
+   public static final int CopperDamage = 100;
+   public static final int CopperXP = 50;
+   public static final int BrassDamage = 150;
+   public static final int BrassXP = 100;
+   public static final int BronzeDamage = 200;
+   public static final int BronzeXP = 150;
 
    public static void apply(Logger logger) {
 
@@ -43,8 +43,8 @@ public class Hammer {
       
       GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
          new ItemStack(TinkerTools.hammerHead, 1, HarvestLevel.STONE.id()),
-         Chisel.Stone_Damage * 8, 
-         Chisel.Stone_XP * 8,
+         Chisel.StoneDamage * 8, 
+         Chisel.StoneXP * 8,
          TinkerTools.chisel, HarvestLevel.FLINT,
          new Object[][] {{"stone", "stone", "stone"}, 
                          {"stone", "stone", "stone"}, 

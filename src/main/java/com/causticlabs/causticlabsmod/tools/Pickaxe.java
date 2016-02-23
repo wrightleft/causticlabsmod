@@ -29,7 +29,7 @@ import tconstruct.tools.TinkerTools;
 import tconstruct.tools.TinkerTools.MaterialID;
 
 public class Pickaxe {
-
+   
    public static void apply(Logger logger) {
 
       // Pickaxe Recipes
@@ -59,8 +59,8 @@ public class Pickaxe {
       
       GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
          new ItemStack(TinkerTools.pickaxeHead, 1, HarvestLevel.STONE.id()),
-         Chisel.Stone_Damage * 5, 
-         Chisel.Stone_XP * 5,
+         Chisel.StoneDamage * 5, 
+         Chisel.StoneXP * 5,
          TinkerTools.chisel, HarvestLevel.FLINT,
          new Object[][] {{"stone", "stone", null   },  
                          {null   , "stone", "stone"}, 
@@ -68,8 +68,8 @@ public class Pickaxe {
       
       GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
          new ItemStack(TinkerTools.pickaxeHead, 1, HarvestLevel.COPPER.id()),
-         Hammer.Copper_Damage * 5, 
-         Hammer.Copper_XP * 5,
+         Hammer.CopperDamage * 5, 
+         Hammer.CopperXP * 5,
          TinkerTools.hammer, HarvestLevel.STONE,
          new Object[][] {{"ingotCopper", "ingotCopper", null         },  
                          {null         , "ingotCopper", "ingotCopper"}, 
@@ -77,8 +77,8 @@ public class Pickaxe {
       
       GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
          new ItemStack(TinkerTools.pickaxeHead, 1, HarvestLevel.BRASS.id()),
-         Hammer.Brass_Damage * 5, 
-         Hammer.Brass_XP * 5,
+         Hammer.BrassDamage * 5, 
+         Hammer.BrassXP * 5,
          TinkerTools.hammer, HarvestLevel.STONE,
          new Object[][] {{"ingotBrass", "ingotBrass", null        },  
                          {null        , "ingotBrass", "ingotBrass"}, 
@@ -86,8 +86,8 @@ public class Pickaxe {
       
       GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
          new ItemStack(TinkerTools.pickaxeHead, 1, HarvestLevel.BRONZE.id()),
-         Hammer.Bronze_Damage * 5, 
-         Hammer.Bronze_XP * 5,
+         Hammer.BronzeDamage * 5, 
+         Hammer.BronzeXP * 5,
          TinkerTools.hammer, HarvestLevel.STONE,
          new Object[][] {{"ingotBronze", "ingotBronze", null         },  
                          {null         , "ingotBronze", "ingotBronze"}, 
@@ -95,8 +95,8 @@ public class Pickaxe {
       
       GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
          new ItemStack(TinkerTools.pickaxeHead, 1, HarvestLevel.OBSIDIAN.id()), 
-         Chisel.Obisdian_Damage * 5, 
-         Chisel.Obisdian_XP * 5, 
+         Chisel.ObisdianDamage * 5, 
+         Chisel.ObisdianXP * 5, 
          TinkerTools.chisel, HarvestLevel.STEEL,
          new Object[][] {{"blockObsidian", "blockObsidian", null           }, 
                          {null           , "blockObsidian", "blockObsidian"}, 

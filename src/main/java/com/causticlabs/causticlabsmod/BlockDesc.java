@@ -49,13 +49,19 @@ public enum BlockDesc implements Iterable<BlockWrapper>{
         Blocks.planks),
     DIRT(
        Blocks.dirt,
-       Blocks.grass);
+       Blocks.grass),
+    
+    BRASS_BLOCK("Metallurgy:precious.block:3");
 
    private List<BlockWrapper> _blocks;
    
    @Override
    public Iterator<BlockWrapper> iterator() {
        return _blocks.iterator();
+   }
+   
+   public BlockWrapper first() {
+      return _blocks.get(0);
    }
 
    BlockDesc(Object... objs) {

@@ -2,10 +2,8 @@ package com.causticlabs.causticlabsmod;
 
 import org.apache.logging.log4j.Logger;
 
-import com.causticlabs.causticlabsmod.tools.Chisel;
-import com.causticlabs.causticlabsmod.tools.Hammer;
-import com.causticlabs.causticlabsmod.tools.Hatchet;
-import com.causticlabs.causticlabsmod.tools.Pickaxe;
+import com.causticlabs.causticlabsmod.materials.*;
+import com.causticlabs.causticlabsmod.tools.*;
 
 import cofh.lib.util.helpers.ItemHelper;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -69,6 +67,8 @@ public class CausticLabsMod {
       MinecraftForge.EVENT_BUS.register(new BlockEventHandler());
       MinecraftForge.EVENT_BUS.register(new PlayerEventHandler());
       FMLCommonHandler.instance().bus().register(new ItemCraftedEventHandler());
+      
+      Brass.init(logger);
    }
 
    @Mod.EventHandler
@@ -91,7 +91,10 @@ public class CausticLabsMod {
       Hatchet.apply(logger);
       Planks.apply(logger); 
       
+      Brass.postInit(logger);
+      AluminumBrass.apply(logger);
       Alumite.apply(logger);
+      Invar.apply(logger);
       Steel.apply(logger);
 
       // Adding this recipe causes any modification normally done in the tool
