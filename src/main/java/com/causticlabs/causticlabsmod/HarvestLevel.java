@@ -213,7 +213,7 @@ public enum HarvestLevel {
     * 
     * @param logger
     */
-   public static void apply(Logger logger) {
+   public static void postInit(Logger logger) {
       
       for (HarvestLevel material : HarvestLevel.values()) {
 

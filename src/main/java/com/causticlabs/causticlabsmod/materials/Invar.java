@@ -11,9 +11,9 @@ import tconstruct.library.crafting.AlloyMix;
 import tconstruct.library.crafting.Smeltery;
 import tconstruct.smeltery.TinkerSmeltery;
 
-public class Invar {
-   public static void apply(Logger logger) {
-      logger.info("applying invar customizations");
+public class Invar {   
+   public static void postInit(Logger logger) {
+      logger.info("Invar: postInit");
       
       Smeltery.getAlloyList().removeIf(
          alloy -> 

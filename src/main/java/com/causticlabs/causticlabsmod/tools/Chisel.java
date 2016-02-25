@@ -34,7 +34,7 @@ public class Chisel {
    public static final int ObisdianDamage = 100;
    public static final int ObisdianXP = 50;
    
-   public static void apply(Logger logger) {
+   public static void postInit(Logger logger) {
 
       // Chisel Recipes
       

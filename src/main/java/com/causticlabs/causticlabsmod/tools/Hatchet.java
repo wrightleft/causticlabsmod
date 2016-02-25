@@ -19,7 +19,7 @@ public class Hatchet {
    public static final int Wood_Damage = 10;
    public static final int Wood_XP = 5;
 
-   public static void apply(Logger logger) {
+   public static void postInit(Logger logger) {
 
       // Hatchet Recipes
       

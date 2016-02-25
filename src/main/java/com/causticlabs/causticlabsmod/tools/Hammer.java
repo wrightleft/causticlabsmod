@@ -22,7 +22,7 @@ public class Hammer {
    public static final int BronzeDamage = 200;
    public static final int BronzeXP = 150;
 
-   public static void apply(Logger logger) {
+   public static void postInit(Logger logger) {
 
       // Hammer Recipes
 

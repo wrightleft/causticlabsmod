@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import tconstruct.tools.TinkerTools;
 
 public class Planks {
-   public static void apply(Logger logger) {
+   public static void postInit(Logger logger) {
 
       // Add recipes that use TCon tools in a way that damages them. This makes
       // a lot of sense, but is strangely not straight forward. The idea here is

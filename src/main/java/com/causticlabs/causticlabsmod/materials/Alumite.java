@@ -12,7 +12,7 @@ import tconstruct.library.crafting.Smeltery;
 import tconstruct.smeltery.TinkerSmeltery;
 
 public class Alumite {
-   public static void apply(Logger logger) {
+   public static void postInit(Logger logger) {
       logger.info("applying alumite customizations");
       
       Smeltery.getAlloyList().removeIf(
