@@ -2,21 +2,14 @@ package com.causticlabs.causticlabsmod.materials;
 
 import org.apache.logging.log4j.Logger;
 
-import com.causticlabs.causticlabsmod.BlockDesc;
 import com.causticlabs.causticlabsmod.Utils;
 
 import cofh.lib.util.BlockWrapper;
-import cofh.lib.util.helpers.FluidHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import scala.actors.threadpool.Arrays;
 import tconstruct.TConstruct;
-import tconstruct.library.crafting.AlloyMix;
 import tconstruct.library.crafting.FluidType;
 import tconstruct.library.crafting.Smeltery;
-import tconstruct.smeltery.TinkerSmeltery;
 
 public class Brass {
    
@@ -31,7 +24,7 @@ public class Brass {
    }
 
    public static void postInit(Logger logger) {
-      logger.info("Brasss: postInit");
+      logger.info("Brass: postInit");
       
       Smeltery.addDictionaryMelting(
          "ingotBrass", 

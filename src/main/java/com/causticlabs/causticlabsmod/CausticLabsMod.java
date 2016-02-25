@@ -1,5 +1,7 @@
 package com.causticlabs.causticlabsmod;
 
+import java.util.List;
+
 import org.apache.logging.log4j.Logger;
 
 import com.causticlabs.causticlabsmod.materials.*;
@@ -15,6 +17,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
@@ -29,7 +33,7 @@ import tconstruct.weaponry.TinkerWeaponry;
 //
 // denseores
 // Iguana's Tinkers Tweaks
-@Mod(modid = CausticLabsMod.MODID, name = CausticLabsMod.NAME, version = CausticLabsMod.VERSION, dependencies = "required-after:TConstruct;required-after:ThermalFoundation;required-after:ThermalExpansion")
+@Mod(modid = CausticLabsMod.MODID, name = CausticLabsMod.NAME, version = CausticLabsMod.VERSION, dependencies = "required-after:TConstruct;required-after:ThermalFoundation;required-after:ThermalExpansion;required-after:Metallurgy")
 public class CausticLabsMod {
    public static final String MODID = "causticlabsmod";
    public static final String NAME = "Caustic Labs Mod";
@@ -84,18 +88,24 @@ public class CausticLabsMod {
       TConstructRegistry.getTableCasting().getCastingRecipes().removeIf(
          recipe -> recipe.output.getItem() == TinkerSmeltery.metalPattern);
       
-      HarvestLevel.apply(logger);
-      Pickaxe.apply(logger);
-      Chisel.apply(logger);
-      Hammer.apply(logger);
-      Hatchet.apply(logger);
-      Planks.apply(logger); 
+      // Remove some recipes.
+      List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
+      ItemStack steelDust = new ItemStack(GameRegistry.findItem("Metallurgy", "base.dust"), 1, 7);
+      recipes.removeIf(recipe -> (recipe.getRecipeOutput() != null) &&
+         recipe.getRecipeOutput().isItemEqual(steelDust));
+      
+      HarvestLevel.postInit(logger);
+      Pickaxe.postInit(logger);
+      Chisel.postInit(logger);
+      Hammer.postInit(logger);
+      Hatchet.postInit(logger);
+      Planks.postInit(logger); 
       
       Brass.postInit(logger);
-      AluminumBrass.apply(logger);
-      Alumite.apply(logger);
-      Invar.apply(logger);
-      Steel.apply(logger);
+      AluminumBrass.postInit(logger);
+      Alumite.postInit(logger);
+      Invar.postInit(logger);
+      Steel.postInit(logger);
 
       // Adding this recipe causes any modification normally done in the tool
       // station or forge to be available in normal crafting station or just
@@ -206,7 +216,7 @@ public class CausticLabsMod {
 
       GameRegistry.addRecipe(
          new ShapelessUseTConToolRecipe(
-            new ItemStack(TinkerTools.crossbar, 1), 
+            new ItemStack(TinkerTools.crossbar, 1, MaterialID.Wood), 
             Hatchet.Wood_Damage * 1, 
             Hatchet.Wood_XP * 1,
             HarvestLevel.FLINT, 
