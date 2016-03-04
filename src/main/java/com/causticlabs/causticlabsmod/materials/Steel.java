@@ -8,9 +8,8 @@ import cpw.mods.fml.common.registry.GameData;
 import net.minecraft.item.ItemStack;
 
 /**
- * Steel is only an alloy. It cannot be mined.
- * 
- * TODO - This is all wrong. Adjust accordingly.
+ * Steel is an alloy that can only be made in the induction smelter.
+ * The smeltery just doesn't cut it.
  */
 public class Steel {
    
@@ -22,36 +21,51 @@ public class Steel {
       // ore dictionary ingredients. It'll take care of the ore dictionary stuff
       // itself.
 
-      ItemStack ironIngot = ItemHelper.stack(GameData.getItemRegistry().getObject("minecraft:iron_ingot"), 1, 0);
       ItemStack ironDust = ItemHelper.stack(GameData.getItemRegistry().getObject("ThermalFoundation:material"), 1, 0);
+      ItemStack ironIngot = ItemHelper.stack(GameData.getItemRegistry().getObject("minecraft:iron_ingot"), 1, 0);
 
-      ItemStack manganeseIngot = ItemHelper.stack(GameData.getItemRegistry().getObject("Metallurgy:manganese.ingot"), 1, 0);
-      ItemStack manganeseDust = ItemHelper.stack(GameData.getItemRegistry().getObject("Metallurgy:base.dust"), 1, 2);
+      ItemStack obsidianBlock = ItemHelper.stack(GameData.getItemRegistry().getObject("minecraft:obsidian"), 1, 0);
+      ItemStack obsidianIngot = ItemHelper.stack(GameData.getItemRegistry().getObject("TConstruct:materials"), 1, 18);
+      ItemStack obsidianDust = ItemHelper.stack(GameData.getItemRegistry().getObject("ThermalFoundation:material"), 1, 4);
 
       ItemStack steelIngot = ItemHelper.stack(GameData.getItemRegistry().getObject("TConstruct:materials"), 1, 16);
       
       ThermalExpansionHelper.addSmelterRecipe(
          8000, 
-         ItemHelper.cloneStack(manganeseDust, 1), 
+         ItemHelper.cloneStack(obsidianDust, 1), 
          ItemHelper.cloneStack(ironDust, 2), 
          ItemHelper.cloneStack(steelIngot, 2));
       
       ThermalExpansionHelper.addSmelterRecipe(
          10000, 
-         ItemHelper.cloneStack(manganeseDust, 1), 
+         ItemHelper.cloneStack(obsidianIngot, 1), 
+         ItemHelper.cloneStack(ironDust, 2), 
+         ItemHelper.cloneStack(steelIngot, 2));
+      
+      ThermalExpansionHelper.addSmelterRecipe(
+         48000, 
+         ItemHelper.cloneStack(obsidianBlock, 1), 
+         ItemHelper.cloneStack(ironDust, 8), 
+         ItemHelper.cloneStack(steelIngot, 8));
+      
+      
+
+      ThermalExpansionHelper.addSmelterRecipe(
+         10000, 
+         ItemHelper.cloneStack(obsidianDust, 1), 
          ItemHelper.cloneStack(ironIngot, 2), 
-         ItemHelper.cloneStack(steelIngot, 2));
-      
-      ThermalExpansionHelper.addSmelterRecipe(
-         10000, 
-         ItemHelper.cloneStack(manganeseIngot, 1), 
-         ItemHelper.cloneStack(ironDust, 2), 
          ItemHelper.cloneStack(steelIngot, 2));
       
       ThermalExpansionHelper.addSmelterRecipe(
          12000, 
-         ItemHelper.cloneStack(manganeseIngot, 1), 
+         ItemHelper.cloneStack(obsidianIngot, 1), 
          ItemHelper.cloneStack(ironIngot, 2), 
          ItemHelper.cloneStack(steelIngot, 2));
+      
+      ThermalExpansionHelper.addSmelterRecipe(
+         56000, 
+         ItemHelper.cloneStack(obsidianBlock, 1), 
+         ItemHelper.cloneStack(ironIngot, 8), 
+         ItemHelper.cloneStack(steelIngot, 8));
    }
 }

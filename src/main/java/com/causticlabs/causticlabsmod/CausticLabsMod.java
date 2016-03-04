@@ -33,7 +33,7 @@ import tconstruct.weaponry.TinkerWeaponry;
 //
 // denseores
 // Iguana's Tinkers Tweaks
-@Mod(modid = CausticLabsMod.MODID, name = CausticLabsMod.NAME, version = CausticLabsMod.VERSION, dependencies = "required-after:TConstruct;required-after:ThermalFoundation;required-after:ThermalExpansion;required-after:Metallurgy")
+@Mod(modid = CausticLabsMod.MODID, name = CausticLabsMod.NAME, version = CausticLabsMod.VERSION, dependencies = "required-after:TConstruct;required-after:ThermalFoundation;required-after:ThermalExpansion")
 public class CausticLabsMod {
    public static final String MODID = "causticlabsmod";
    public static final String NAME = "Caustic Labs Mod";
@@ -71,8 +71,6 @@ public class CausticLabsMod {
       MinecraftForge.EVENT_BUS.register(new BlockEventHandler());
       MinecraftForge.EVENT_BUS.register(new PlayerEventHandler());
       FMLCommonHandler.instance().bus().register(new ItemCraftedEventHandler());
-      
-      Brass.init(logger);
    }
 
    @Mod.EventHandler
@@ -101,7 +99,6 @@ public class CausticLabsMod {
       Hatchet.postInit(logger);
       Planks.postInit(logger); 
       
-      Brass.postInit(logger);
       AluminumBrass.postInit(logger);
       Alumite.postInit(logger);
       Invar.postInit(logger);

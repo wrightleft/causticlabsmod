@@ -76,15 +76,6 @@ public class Pickaxe {
                          {null         , null         , "ingotCopper"}}));
       
       GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
-         new ItemStack(TinkerTools.pickaxeHead, 1, HarvestLevel.BRASS.id()),
-         Hammer.BrassDamage * 5, 
-         Hammer.BrassXP * 5,
-         TinkerTools.hammer, HarvestLevel.STONE,
-         new Object[][] {{"ingotBrass", "ingotBrass", null        },  
-                         {null        , "ingotBrass", "ingotBrass"}, 
-                         {null        , null        , "ingotBrass"}}));
-      
-      GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
          new ItemStack(TinkerTools.pickaxeHead, 1, HarvestLevel.BRONZE.id()),
          Hammer.BronzeDamage * 5, 
          Hammer.BronzeXP * 5,
@@ -93,15 +84,6 @@ public class Pickaxe {
                          {null         , "ingotBronze", "ingotBronze"}, 
                          {null         , null         , "ingotBronze"}}));
       
-      GameRegistry.addRecipe(new ShapedUseTConToolRecipe(
-         new ItemStack(TinkerTools.pickaxeHead, 1, HarvestLevel.OBSIDIAN.id()), 
-         Chisel.ObisdianDamage * 5, 
-         Chisel.ObisdianXP * 5, 
-         TinkerTools.chisel, HarvestLevel.STEEL,
-         new Object[][] {{"blockObsidian", "blockObsidian", null           }, 
-                         {null           , "blockObsidian", "blockObsidian"}, 
-                         {null           , null           , "blockObsidian"}}));
-
       // Remove all of the casting recipes for the pickaxe head. We'll add our
       // own, with our own values.
       TConstructRegistry.getTableCasting().getCastingRecipes().removeIf(

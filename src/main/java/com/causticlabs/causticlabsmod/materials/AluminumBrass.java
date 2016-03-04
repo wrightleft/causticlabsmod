@@ -23,6 +23,6 @@ public class AluminumBrass {
       Smeltery.addAlloyMixing(
          new FluidStack(TinkerSmeltery.moltenAlubrassFluid, TConstruct.nuggetLiquidValue * 3),
          new FluidStack(TinkerSmeltery.moltenAluminumFluid, TConstruct.nuggetLiquidValue * 2),
-         new FluidStack(Brass.FLUID, TConstruct.nuggetLiquidValue * 1));
+         new FluidStack(TinkerSmeltery.moltenBronzeFluid, TConstruct.nuggetLiquidValue * 1));
    }
 }

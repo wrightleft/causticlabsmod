@@ -17,8 +17,6 @@ public enum BlockDesc implements Iterable<BlockWrapper>{
         Blocks.mossy_cobblestone,
         Blocks.sandstone),
     ALUMINUM_ORE(new BlockWrapper(TinkerWorld.oreSlag, 5)),
-    ARDITE_ORE(new BlockWrapper(TinkerWorld.oreSlag, 2)),
-    COBALT_ORE(new BlockWrapper(TinkerWorld.oreSlag, 1)),
     Redstone_Ore(
        Blocks.redstone_ore,
        Blocks.lit_redstone_ore),
@@ -28,10 +26,9 @@ public enum BlockDesc implements Iterable<BlockWrapper>{
     TIN_ORE("ThermalFoundation:Ore:1"),
     NICKEL_ORE("ThermalFoundation:Ore:4"),
     MITHRIL_ORE("ThermalFoundation:Ore:6"),
-    ZINC_ORE("Metallurgy:precious.ore:0"),
-    MANGANESE_ORE("Metallurgy:base.ore:2"),
     IRON_ORE(Blocks.iron_ore),
-    SHADOW_IRON("Metallurgy:nether.ore:1"),
+    ARDITE_ORE(new BlockWrapper(TinkerWorld.oreSlag, 2)),
+    COBALT_ORE(new BlockWrapper(TinkerWorld.oreSlag, 1)),
 
     Lead_Ore("ThermalFoundation:Ore:3"),
     
@@ -49,9 +46,8 @@ public enum BlockDesc implements Iterable<BlockWrapper>{
         Blocks.planks),
     DIRT(
        Blocks.dirt,
-       Blocks.grass),
-    
-    BRASS_BLOCK("Metallurgy:precious.block:3");
+       Blocks.grass)
+    ;
 
    private List<BlockWrapper> _blocks;
    

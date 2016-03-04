@@ -36,37 +36,37 @@ import tconstruct.tools.TinkerTools.MaterialID;
 public enum HarvestLevel {   
    HAND("Hand", 
       ToolClass.SHOVEL, BlockDesc.DIRT, Blocks.sand, Blocks.glowstone),
-   FLINT("Flint", getMaterialId("Flint"),
+   FLINT("Flint", 
       171, 525, 2, 0.7F, 0, 0.0F, DARK_GRAY.toString(), 0x484848,
       ToolClass.PICKAXE, Blocks.coal_ore, BlockDesc.STONE, 
       ToolClass.AXE, BlockDesc.WOOD),
-   STONE("Stone", getMaterialId("Stone"),
+   STONE("Stone", 
       131, 400, 1, 0.5F, 0, 1.0F, GRAY.toString(), 0x7F7F7F,
       ToolClass.PICKAXE, BlockDesc.COPPER_ORE),
-   COPPER("Copper", getMaterialId("Copper"),
-      180, 500, 2, 1.15F, 0, 0.0F, RED.toString(), 0xCC6410,
-      ToolClass.PICKAXE, BlockDesc.ZINC_ORE),
-   BRASS("Brass", 201, /* New Material */
+   COPPER("Copper", 
       180, 500, 2, 1.15F, 0, 0.0F, RED.toString(), 0xCC6410,
       ToolClass.PICKAXE, BlockDesc.TIN_ORE),
-   BRONZE("Bronze", getMaterialId("Bronze"),
+   BRONZE("Bronze", 
       550, 800, 2, 1.3F, 1, 0.0F, GOLD.toString(), 0xCA9956,
       ToolClass.PICKAXE, BlockDesc.ALUMINUM_ORE),
-   ALUMITE("Alumite", getMaterialId("Alumite"),
-      700, 800, 3, 1.3F, 2, 0F, LIGHT_PURPLE.toString(), 0xFFA7E9,
+   ALUMITE("Alumite", 
+      700, 800, 3, 1.3F, 2, 0f, LIGHT_PURPLE.toString(), 0xffa7e9,
       ToolClass.PICKAXE, BlockDesc.IRON_ORE),
-   IRON("Iron", getMaterialId("Iron"),
+   IRON("Iron", 
       250, 600, 2, 1.3F, 1, 0.0F, WHITE.toString(), 0xDADADA,
       ToolClass.PICKAXE, BlockDesc.NICKEL_ORE),
-   INVAR("Invar", getMaterialId("Invar"),
+   INVAR("Invar", 
       250, 600, 2, 1.3F, 1, 0.0F, WHITE.toString(), 0xDADADA,
-      ToolClass.PICKAXE, BlockDesc.MANGANESE_ORE),
-   STEEL("Steel", getMaterialId("Steel"),
+      ToolClass.PICKAXE),
+   STEEL("Steel", 
       750, 1000, 4, 1.3F, 2, 0.0F, GRAY.toString(), 0xA0A0A0,
-      ToolClass.PICKAXE, BlockDesc.OBSIDIAN),
-   OBSIDIAN("Obsidian", getMaterialId("Obsidian"),
-      89, 700, 2, 0.8F, 3, 0.0F, LIGHT_PURPLE.toString(), 0xAA7FF5,
-      ToolClass.PICKAXE, BlockDesc.SHADOW_IRON);
+      ToolClass.PICKAXE, BlockDesc.COBALT_ORE),
+   COBALT("Cobalt", 
+      800, 1400, 3, 1.75F, 2, 0.0F, DARK_AQUA.toString(), 0x2376DD,
+      ToolClass.PICKAXE, BlockDesc.ARDITE_ORE),
+   MANYULLYN("Manyullyn", 
+      1200, 900, 4, 2.5F, 0, 0f, DARK_PURPLE.toString(), 0x7338A5,
+      ToolClass.PICKAXE);
       
    private final String _name;
    private final int _id;
@@ -86,7 +86,6 @@ public enum HarvestLevel {
    
    private HarvestLevel(
       String name,
-      int materialID,
       int durability, 
       int speed, 
       int attack, 
@@ -99,7 +98,7 @@ public enum HarvestLevel {
       Object... blocks) {
 
       _name = name;
-      _id = materialID;
+      _id = getMaterialId(name);
       _material = new ToolMaterial(
          name,
          ordinal(),
@@ -111,13 +110,7 @@ public enum HarvestLevel {
          stonebound,
          style,
          primaryColor);   
-      
-      if (getMaterialId(name) != materialID) {
-         // If we got here, this is a new material, so we need to tell TCon 
-         // about it.
-         TConstructRegistry.addtoolMaterial(materialID, _material);
-      }
-         
+               
       initializeBlocks(toolClass, blocks);
    }
    
