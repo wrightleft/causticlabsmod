@@ -16,6 +16,10 @@ public class Planks {
       // a lot of sense, but is strangely not straight forward. The idea here is
       // that we can't turn a log into planks with our bare hands, we need a tool.
 
+      // TODO - Do we want to add another tool, like the battleaxe?
+
+      Utils.removeRecipesFor(Blocks.planks);
+      
       GameRegistry.addRecipe(new ShapelessUseTConToolRecipe(
          new ItemStack(Blocks.planks, 1, 0), 
          Hatchet.Wood_Damage * 1,

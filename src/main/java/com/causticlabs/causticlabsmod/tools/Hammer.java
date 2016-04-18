@@ -23,6 +23,7 @@ public class Hammer {
    public static final int BronzeXP = 150;
 
    public static void postInit(Logger logger) {
+      logger.info("Hammer - Post Initialization");
 
       // Hammer Recipes
 

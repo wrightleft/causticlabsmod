@@ -31,6 +31,7 @@ import tconstruct.tools.TinkerTools.MaterialID;
 public class Pickaxe {
    
    public static void postInit(Logger logger) {
+      logger.info("Pickaxe - Post Initialization");
 
       // Pickaxe Recipes
 

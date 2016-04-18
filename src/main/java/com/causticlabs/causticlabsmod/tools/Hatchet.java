@@ -14,12 +14,14 @@ import net.minecraft.item.ItemStack;
 import tconstruct.library.TConstructRegistry;
 import tconstruct.library.crafting.PatternBuilder;
 import tconstruct.tools.TinkerTools;
+import tconstruct.tools.TinkerTools.MaterialID;
 
 public class Hatchet {
    public static final int Wood_Damage = 10;
    public static final int Wood_XP = 5;
 
    public static void postInit(Logger logger) {
+      logger.info("Hatchet - Post Initialization");
 
       // Hatchet Recipes
       
@@ -33,11 +35,12 @@ public class Hatchet {
                                {new Handle("materialRod"), null                    }}));
 
       // Hatchet Head Recipes
-      
-      GameRegistry.addRecipe(ItemHelper.ShapedRecipe(
-         new ItemStack(TinkerTools.hatchetHead, 1, HarvestLevel.FLINT.id()),
-         "##", 
-         "##",
-         '#', "itemFlint"));
+
+      GameRegistry.addRecipe(
+         ItemHelper.ShapedRecipe(
+            new ItemStack(TinkerTools.hatchetHead, 1, MaterialID.Flint),
+            "##", 
+            "##",
+            '#', Items.flint));
    }
 }

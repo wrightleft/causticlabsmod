@@ -35,6 +35,7 @@ public class Chisel {
    public static final int ObisdianXP = 50;
    
    public static void postInit(Logger logger) {
+      logger.info("Chisel - Post Initialization");
 
       // Chisel Recipes
       

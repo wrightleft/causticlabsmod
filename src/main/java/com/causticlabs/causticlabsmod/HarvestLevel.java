@@ -1,6 +1,13 @@
 package com.causticlabs.causticlabsmod;
 
-import static net.minecraft.util.EnumChatFormatting.*;
+import static net.minecraft.util.EnumChatFormatting.DARK_AQUA;
+import static net.minecraft.util.EnumChatFormatting.DARK_GRAY;
+import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
+import static net.minecraft.util.EnumChatFormatting.GOLD;
+import static net.minecraft.util.EnumChatFormatting.GRAY;
+import static net.minecraft.util.EnumChatFormatting.LIGHT_PURPLE;
+import static net.minecraft.util.EnumChatFormatting.RED;
+import static net.minecraft.util.EnumChatFormatting.WHITE;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,13 +18,10 @@ import java.util.Map.Entry;
 import org.apache.logging.log4j.Logger;
 
 import cofh.lib.util.BlockWrapper;
-import cpw.mods.fml.common.registry.GameData;
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import tconstruct.library.TConstructRegistry;
 import tconstruct.library.tools.ToolMaterial;
 import tconstruct.library.util.HarvestLevels;
-import tconstruct.tools.TinkerTools.MaterialID;
 
 /**
  * These materials need to be defined in successive harvest levels.
@@ -27,8 +31,7 @@ import tconstruct.tools.TinkerTools.MaterialID;
  * TODO - Tweak the durability and speed of the materials to make sense. To
  *        begin with, they were just copied from what Tinkers' Construct used.
  *        
- * TODO - The colors are also just copied, and may not be correct:
- *        - brass
+ * TODO - The colors are also just copied, and may not be correct.
  *        
  * TODO - This is only a smattering of all of the blocks that should
  *        be listed here.
@@ -50,7 +53,7 @@ public enum HarvestLevel {
       550, 800, 2, 1.3F, 1, 0.0F, GOLD.toString(), 0xCA9956,
       ToolClass.PICKAXE, BlockDesc.ALUMINUM_ORE),
    ALUMITE("Alumite", 
-      700, 800, 3, 1.3F, 2, 0f, LIGHT_PURPLE.toString(), 0xffa7e9,
+      700, 800, 3, 1.3F, 2, 0f, LIGHT_PURPLE.toString(), 0xFFA7E9,
       ToolClass.PICKAXE, BlockDesc.IRON_ORE),
    IRON("Iron", 
       250, 600, 2, 1.3F, 1, 0.0F, WHITE.toString(), 0xDADADA,
@@ -162,12 +165,14 @@ public enum HarvestLevel {
             // to search the block registry. For example, 
             // "ThermalFoundation:Ore:1", which will translate to the copper ore
             // block.
+            //
+            // You can also use the ore dictionary identifier.
             if (obj instanceof BlockDesc) {
                for (BlockWrapper blockWrapper : (BlockDesc)obj) {
                   existingBlocks.add(blockWrapper);  
                }
             } else {
-               existingBlocks.add(Utils.getBlockWrapper(obj));
+               existingBlocks.addAll(Utils.getBlockWrappers(obj));
             }
          }
       }

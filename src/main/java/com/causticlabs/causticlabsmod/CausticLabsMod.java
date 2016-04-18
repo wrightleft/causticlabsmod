@@ -14,8 +14,10 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
@@ -75,28 +77,44 @@ public class CausticLabsMod {
 
    @Mod.EventHandler
    public void onEvent(FMLPostInitializationEvent event) {
+      logger.info("Post Initialization");
+      
+      // This is where you put things that will interact with other mods.
+      
       // A few vanilla harvest levels get overridden in the static
       // initialization of this ForgeHooks class. Best to get it out of the way 
       // first.
       new ForgeHooks();
       
-      // This is where you put things that will interact with other mods.
-
       // Remove all of the casting recipes for casts.
       TConstructRegistry.getTableCasting().getCastingRecipes().removeIf(
          recipe -> recipe.output.getItem() == TinkerSmeltery.metalPattern);
       
       // Remove some recipes.
+      Utils.removeRecipesFor(Items.stick);
+
       List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
-      ItemStack steelDust = new ItemStack(GameRegistry.findItem("Metallurgy", "base.dust"), 1, 7);
-      recipes.removeIf(recipe -> (recipe.getRecipeOutput() != null) &&
-         recipe.getRecipeOutput().isItemEqual(steelDust));
+      for (IRecipe recipe : recipes) {
+         if (recipe.getRecipeOutput() != null && recipe.getRecipeOutput().getItem() instanceof ItemBlock) {
+            ItemBlock itemBlock = (ItemBlock)recipe.getRecipeOutput().getItem();
+            Block block = itemBlock.field_150939_a;
+            if (block == Blocks.planks) {
+               logger.info("found it");
+            }
+         }
+      }
       
+      // Order is important with these initializations.
+      OreDict.postInit(logger);
+      BlockDesc.postInit(logger);
       HarvestLevel.postInit(logger);
+      
       Pickaxe.postInit(logger);
       Chisel.postInit(logger);
       Hammer.postInit(logger);
       Hatchet.postInit(logger);
+      Shovel.postInit(logger);
+      
       Planks.postInit(logger); 
       
       AluminumBrass.postInit(logger);
@@ -107,28 +125,9 @@ public class CausticLabsMod {
       // Adding this recipe causes any modification normally done in the tool
       // station or forge to be available in normal crafting station or just
       // the inventory crafting grid. Such as repairing a tool, or adding redstone.
-      // This will help eliminate the tool forge and tool builder, which are
-      // a needless complexity.
+      // This will help eliminate the tool forge and tool builder completely, 
+      // which are a needless complexity.
       GameRegistry.addRecipe(new ShapelessTConModRecipe());
-
-      
-      
-      // Fix the ore dictionary for TCon in a couple of places to make the
-      // recipes easier.
-      
-      // Make any kind of tool rod available as a generic rod.
-      OreDictionary.registerOre("materialRod", new ItemStack(TinkerTools.toolRod, 1, OreDictionary.WILDCARD_VALUE));
-      
-      // Make every stick available as a handle.
-      for (ItemStack itemStack : OreDictionary.getOres("stickWood")) {
-         OreDictionary.registerOre("materialRod", itemStack);
-      }
-
-      // Make every binding available as a generic binding.
-      OreDictionary.registerOre("materialBinding", new ItemStack(TinkerTools.binding, 1, OreDictionary.WILDCARD_VALUE));
-      
-      // Make every kind of string available as a binding.
-      OreDictionary.registerOre("materialBinding", new ItemStack(Items.string, 1, OreDictionary.WILDCARD_VALUE));
 
       
       
@@ -141,27 +140,7 @@ public class CausticLabsMod {
       // convenience. 
       
       // TODO - Move these to their own classes.
-/*
-      // Shovel
-      GameRegistry.addRecipe(new ShapedTConToolRecipe(
-            anyShovelHead, 
-            "materialRod", 
-            new Object[][] {{anyShovelHead},
-                            {"materialRod"}}));
-      GameRegistry.addRecipe(new ShapedTConToolRecipe(
-            anyShovelHead, 
-            "materialRod", 
-            new Object[][] {{null         , anyShovelHead},
-                            {"materialRod", null          }}));
-      
-      // Mattock
-      GameRegistry.addRecipe(new ShapedTConToolRecipe(
-            anyHatchetHead,
-            "materialRod", 
-            anyShovelHead, 
-            new Object[][] {{anyHatchetHead, null         , anyShovelHead},
-                            {null          , "materialRod", null          }}));
-
+/*      
       // Dagger
       GameRegistry.addRecipe(new ShapedTConToolRecipe(
             anyKnifeBlade,
@@ -225,6 +204,6 @@ public class CausticLabsMod {
             "  #", 
             " # ",
             "#  ",
-            '#', "stickWood"));      
+            '#', "stickWood"));
    }
 }
