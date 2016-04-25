@@ -35,7 +35,7 @@ import tconstruct.weaponry.TinkerWeaponry;
 //
 // denseores
 // Iguana's Tinkers Tweaks
-@Mod(modid = CausticLabsMod.MODID, name = CausticLabsMod.NAME, version = CausticLabsMod.VERSION, dependencies = "required-after:TConstruct;required-after:ThermalFoundation;required-after:ThermalExpansion")
+@Mod(modid = CausticLabsMod.MODID, name = CausticLabsMod.NAME, version = CausticLabsMod.VERSION, dependencies = "required-after:TConstruct;required-after:ThermalFoundation;required-after:ThermalExpansion;required-after:ExtrabiomesXL")
 public class CausticLabsMod {
    public static final String MODID = "causticlabsmod";
    public static final String NAME = "Caustic Labs Mod";
@@ -91,19 +91,8 @@ public class CausticLabsMod {
          recipe -> recipe.output.getItem() == TinkerSmeltery.metalPattern);
       
       // Remove some recipes.
-      Utils.removeRecipesFor(Items.stick);
+      Utils.removeRecipesFor("ore:stickWood");
 
-      List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
-      for (IRecipe recipe : recipes) {
-         if (recipe.getRecipeOutput() != null && recipe.getRecipeOutput().getItem() instanceof ItemBlock) {
-            ItemBlock itemBlock = (ItemBlock)recipe.getRecipeOutput().getItem();
-            Block block = itemBlock.field_150939_a;
-            if (block == Blocks.planks) {
-               logger.info("found it");
-            }
-         }
-      }
-      
       // Order is important with these initializations.
       OreDict.postInit(logger);
       BlockDesc.postInit(logger);

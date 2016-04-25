@@ -132,11 +132,78 @@ public class Utils {
          (recipe.getRecipeOutput().getItem() == output));
    }
 
-   public static void removeRecipesFor(Block block) {
+   public static void removeRecipesFor(Block block, int metadata) {
+      // There actually isn't any recipes for blocks. Rather we
+      // need to find all of the recipes for itemBlocks, which
+      // turn into block when placed in the world.
+      
       List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
       recipes.removeIf(recipe -> 
          (recipe.getRecipeOutput() != null) &&
          (recipe.getRecipeOutput().getItem() instanceof ItemBlock) &&
-         (((ItemBlock)recipe.getRecipeOutput().getItem()).field_150939_a == block));
+         (((ItemBlock)recipe.getRecipeOutput().getItem()).field_150939_a == block) &&
+         ((metadata == -1) || (recipe.getRecipeOutput().getItemDamage() == metadata)));
+   }
+   
+   public static void removeRecipesFor(Block block) {
+      removeRecipesFor(block, -1);
+   }
+   
+   private static void removeRecipesByOreDict(String name) {
+      List<ItemStack> itemStacks = OreDictionary.getOres(name);
+      for (ItemStack itemStack : itemStacks) {
+         removeRecipesFor(itemStack.getItem());
+      }
+   }
+
+   private static void removeRecipesByName(String identifier) {
+      String[] splitNameStr = identifier.split(":");
+      if (splitNameStr.length > 1) {
+         // We use the getRaw() function to avoid the weird behavior of 
+         // the getObject() function, where it'll return a default object
+         // when it can't find a matching one. We'd rather just get null
+         // so we can have consistent behavior.
+         
+         boolean found_it = false;
+
+         String blockName = String.format("%s:%s", splitNameStr[0], splitNameStr[1]);
+         Block block = GameData.getBlockRegistry().getRaw(blockName);
+         if (block != null) {
+            found_it = true;
+            
+            if (splitNameStr.length > 2) {
+               removeRecipesFor(block, Integer.parseInt(splitNameStr[2]));
+            } else {
+               removeRecipesFor(block);
+            }
+         } else {
+            throw new RuntimeException(
+               String.format("invalid name (%s)", blockName));
+         }
+
+         GameData.getItemRegistry().getRaw(identifier);
+      } else {
+         throw new RuntimeException(
+            String.format("invalid string (%s)", identifier));
+      }
+   }
+   
+   public static void removeRecipesFor(String identifier) {
+      String[] splitIdentifierStr = identifier.split(":");
+      if (splitIdentifierStr.length > 1) {
+         if (splitIdentifierStr[0].equals("ore")) {
+            // Ore dictionary entries also don't have meta data, but we
+            // won't bother checking for that. We'll just let the next
+            // call fail.
+            removeRecipesByOreDict(splitIdentifierStr[1]);
+         } else {
+            // Pass the whole thing on as an identifier. It may have
+            // meta data too.
+            removeRecipesByName(identifier);
+         }
+      } else {
+         throw new RuntimeException(
+            String.format("invalid block identifier (%s)", identifier));
+      }
    }
 }
